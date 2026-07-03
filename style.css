@@ -959,3 +959,79 @@ body {
 .ref-link::before {
   content: "🔐 ";
 }
+/* STRONGER NEON PUB PARTY BACKGROUND */
+
+body {
+  background: #12071f !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "" !important;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 77, 166, 0.55), transparent 26%),
+    radial-gradient(circle at 85% 12%, rgba(250, 204, 21, 0.48), transparent 28%),
+    radial-gradient(circle at 25% 82%, rgba(34, 197, 94, 0.42), transparent 30%),
+    radial-gradient(circle at 88% 78%, rgba(59, 130, 246, 0.42), transparent 32%),
+    linear-gradient(180deg, #26051f 0%, #07111f 54%, #12071f 100%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.22;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12) 0px,
+      rgba(255, 255, 255, 0.12) 2px,
+      transparent 2px,
+      transparent 18px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(250, 204, 21, 0.10) 0px,
+      rgba(250, 204, 21, 0.10) 2px,
+      transparent 2px,
+      transparent 28px
+    );
+}
+
+.app {
+  position: relative;
+  z-index: 1;
+}
+
+.festive-hero {
+  background:
+    linear-gradient(135deg, rgba(255, 77, 166, 0.38), rgba(250, 204, 21, 0.22), rgba(34, 197, 94, 0.20)),
+    rgba(255, 255, 255, 0.10) !important;
+  border: 2px solid rgba(250, 204, 21, 0.50) !important;
+}
+
+.hole-panel {
+  background:
+    linear-gradient(135deg, rgba(34, 197, 94, 0.30), rgba(250, 204, 21, 0.24), rgba(255, 77, 166, 0.22)),
+    rgba(255, 255, 255, 0.10) !important;
+}
+
+.team-card {
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--team-colour) 25%, transparent), rgba(255, 255, 255, 0.08) 55%),
+    rgba(255, 255, 255, 0.09) !important;
+}
+
+.party-strip {
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 8px 10px;
+}

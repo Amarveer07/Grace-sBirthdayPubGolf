@@ -128,7 +128,7 @@ onValue(teamsRef, (snapshot) => {
 
   teams.forEach((team, index) => {
     const card = document.createElement("div");
-    card.className = `team-card ${team.colour || ""}`;
+    card.className = `team-card ${team.id}`;
 
     const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
 

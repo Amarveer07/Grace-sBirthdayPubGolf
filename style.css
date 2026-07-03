@@ -352,3 +352,135 @@ h1 {
   font-weight: bold;
   font-size: 16px;
 }
+.admin-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-team-card {
+  border: 1px solid var(--border);
+  border-left: 7px solid var(--team-colour);
+  border-radius: 24px;
+  padding: 18px;
+  background: var(--card);
+}
+
+.admin-team-card h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.admin-score {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.admin-small {
+  margin: 5px 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.custom-control {
+  display: grid;
+  grid-template-columns: 1fr 90px 110px;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.custom-control label {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.custom-control input,
+.admin-label input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #07111f;
+  font-size: 16px;
+}
+
+.custom-control button,
+.admin-main-button,
+.admin-hole-buttons button,
+.danger-button {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: #facc15;
+  color: #07111f;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-label {
+  display: block;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.admin-hole-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.danger-button {
+  background: #ef4444;
+  color: white;
+}
+
+.history-panel {
+  margin-top: 28px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: var(--card);
+}
+
+.history-panel h2 {
+  margin: 0 0 14px;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item span {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.history-item p {
+  margin: 0;
+  color: #e2e8f0;
+  font-size: 14px;
+}
+
+@media (max-width: 460px) {
+  .custom-control {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-control button {
+    width: 100%;
+  }
+}

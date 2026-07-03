@@ -7,40 +7,137 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <header class="hero">
-      <p class="kicker">Referee Mode</p>
-      <h1>👨‍⚖️ Pub Golf Admin</h1>
-      <p class="tagline">Update scores live</p>
-    </header>
 
-    <section class="hole-panel">
-      <p class="label">Current hole</p>
-      <h2 id="adminHoleTitle">Hole 1 of 9</h2>
+<div id="loginScreen" class="login-screen">
 
-      <label class="admin-label">
-        Pub name
-        <input id="adminPubName" type="text" />
-      </label>
+  <div class="login-card">
+    <h1>👨‍⚖️ Ref Login</h1>
 
-      <button id="savePubName" class="admin-main-button">Save pub name</button>
+    <p>Enter the referee password.</p>
 
-      <div class="admin-hole-buttons">
-        <button id="previousHole">Previous hole</button>
-        <button id="nextHole">Next hole</button>
-      </div>
-    </section>
+    <input
+      type="password"
+      id="passwordInput"
+      placeholder="Password"
+    />
 
-    <section class="board-top">
-      <h2>Teams</h2>
-      <button id="resetScores" class="danger-button">Reset scores</button>
-    </section>
+    <button id="loginButton">
+      Enter
+    </button>
 
-    <section id="adminTeams" class="admin-teams">
-      <p class="loading">Loading teams...</p>
-    </section>
-  </main>
+    <p id="loginError" style="display:none;color:#ff6b6b;margin-top:15px;">
+      Incorrect password.
+    </p>
 
-  <script type="module" src="admin.js"></script>
+  </div>
+
+</div>
+
+<main class="app" id="adminContent" style="display:none;">
+
+  <header class="hero">
+    <p class="kicker">Referee Mode</p>
+    <h1>👨‍⚖️ Pub Golf Admin</h1>
+    <p class="tagline">Update scores live</p>
+  </header>
+
+  <section class="hole-panel">
+
+    <p class="label">Current Hole</p>
+
+    <h2 id="adminHoleTitle">
+      Hole 1 of 9
+    </h2>
+
+    <label class="admin-label">
+
+      Pub name
+
+      <input
+        id="adminPubName"
+        type="text"
+      />
+
+    </label>
+
+    <button
+      id="savePubName"
+      class="admin-main-button"
+    >
+      Save Pub Name
+    </button>
+
+    <div class="admin-hole-buttons">
+
+      <button id="previousHole">
+        Previous Hole
+      </button>
+
+      <button id="nextHole">
+        Next Hole
+      </button>
+
+    </div>
+
+  </section>
+
+  <section class="board-top">
+
+    <h2>Teams</h2>
+
+    <button
+      id="resetScores"
+      class="danger-button"
+    >
+      Reset Scores
+    </button>
+
+  </section>
+
+  <section id="adminTeams">
+
+    Loading...
+
+  </section>
+
+</main>
+
+<script>
+const PASSWORD = "pubgolf";
+
+const loginButton = document.getElementById("loginButton");
+const passwordInput = document.getElementById("passwordInput");
+const loginError = document.getElementById("loginError");
+
+loginButton.addEventListener("click", login);
+
+passwordInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter"){
+        login();
+    }
+});
+
+function login(){
+
+    if(passwordInput.value === PASSWORD){
+
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("adminContent").style.display = "block";
+
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "admin.js";
+
+        document.body.appendChild(script);
+
+    }else{
+
+        loginError.style.display = "block";
+
+    }
+
+}
+</script>
+
 </body>
 </html>

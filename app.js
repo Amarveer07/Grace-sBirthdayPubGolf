@@ -331,14 +331,14 @@ function renderLeaderboard(teams) {
   requestAnimationFrame(() => {
     movements.forEach((movement) => {
       movement.card.style.transition =
-        "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)";
+        "transform 1200ms cubic-bezier(0.22, 1, 0.36, 1)";
 
       movement.card.style.transform =
         "translate(0, 0)";
 
       setTimeout(() => {
         movement.card.style.zIndex = "";
-      }, 850);
+      }, 1250);
     });
   });
 

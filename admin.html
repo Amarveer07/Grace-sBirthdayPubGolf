@@ -7,137 +7,82 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <h1>👨‍⚖️ Ref Login</h1>
+      <p>Enter the referee password.</p>
 
-<div id="loginScreen" class="login-screen">
+      <input id="passwordInput" type="password" placeholder="Password" />
+      <button id="loginButton">Enter</button>
 
-  <div class="login-card">
-    <h1>👨‍⚖️ Ref Login</h1>
-
-    <p>Enter the referee password.</p>
-
-    <input
-      type="password"
-      id="passwordInput"
-      placeholder="Password"
-    />
-
-    <button id="loginButton">
-      Enter
-    </button>
-
-    <p id="loginError" style="display:none;color:#ff6b6b;margin-top:15px;">
-      Incorrect password.
-    </p>
-
+      <p id="loginError" class="login-error">Incorrect password.</p>
+    </div>
   </div>
 
-</div>
+  <main class="app hidden" id="adminContent">
+    <header class="hero">
+      <p class="kicker">Referee Mode</p>
+      <h1>👨‍⚖️ Pub Golf Admin</h1>
+      <p class="tagline">Update scores live</p>
+    </header>
 
-<main class="app" id="adminContent" style="display:none;">
+    <section class="hole-panel">
+      <p class="label">Current Hole</p>
+      <h2 id="adminHoleTitle">Hole 1 of 9</h2>
 
-  <header class="hero">
-    <p class="kicker">Referee Mode</p>
-    <h1>👨‍⚖️ Pub Golf Admin</h1>
-    <p class="tagline">Update scores live</p>
-  </header>
+      <label class="admin-label">
+        Pub name
+        <input id="adminPubName" type="text" />
+      </label>
 
-  <section class="hole-panel">
+      <button id="savePubName" class="admin-main-button">Save Pub Name</button>
 
-    <p class="label">Current Hole</p>
+      <div class="admin-hole-buttons">
+        <button id="previousHole">Previous Hole</button>
+        <button id="nextHole">Next Hole</button>
+      </div>
+    </section>
 
-    <h2 id="adminHoleTitle">
-      Hole 1 of 9
-    </h2>
+    <section class="board-top">
+      <h2>Teams</h2>
+      <button id="resetScores" class="danger-button">Reset Scores</button>
+    </section>
 
-    <label class="admin-label">
+    <section id="adminTeams" class="admin-teams">
+      <p class="loading">Loading teams...</p>
+    </section>
+  </main>
 
-      Pub name
+  <script>
+    const PASSWORD = "pubgolf";
 
-      <input
-        id="adminPubName"
-        type="text"
-      />
+    const loginScreen = document.getElementById("loginScreen");
+    const adminContent = document.getElementById("adminContent");
+    const loginButton = document.getElementById("loginButton");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginError = document.getElementById("loginError");
 
-    </label>
-
-    <button
-      id="savePubName"
-      class="admin-main-button"
-    >
-      Save Pub Name
-    </button>
-
-    <div class="admin-hole-buttons">
-
-      <button id="previousHole">
-        Previous Hole
-      </button>
-
-      <button id="nextHole">
-        Next Hole
-      </button>
-
-    </div>
-
-  </section>
-
-  <section class="board-top">
-
-    <h2>Teams</h2>
-
-    <button
-      id="resetScores"
-      class="danger-button"
-    >
-      Reset Scores
-    </button>
-
-  </section>
-
-  <section id="adminTeams">
-
-    Loading...
-
-  </section>
-
-</main>
-
-<script>
-const PASSWORD = "pubgolf";
-
-const loginButton = document.getElementById("loginButton");
-const passwordInput = document.getElementById("passwordInput");
-const loginError = document.getElementById("loginError");
-
-loginButton.addEventListener("click", login);
-
-passwordInput.addEventListener("keydown", (e) => {
-    if(e.key === "Enter"){
-        login();
-    }
-});
-
-function login(){
-
-    if(passwordInput.value === PASSWORD){
-
-        document.getElementById("loginScreen").style.display = "none";
-        document.getElementById("adminContent").style.display = "block";
+    function login() {
+      if (passwordInput.value === PASSWORD) {
+        loginScreen.classList.add("hidden");
+        adminContent.classList.remove("hidden");
 
         const script = document.createElement("script");
         script.type = "module";
         script.src = "admin.js";
-
         document.body.appendChild(script);
-
-    }else{
-
+      } else {
         loginError.style.display = "block";
-
+      }
     }
 
-}
-</script>
+    loginButton.addEventListener("click", login);
 
+    passwordInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        login();
+      }
+    });
+  </script>
 </body>
 </html>

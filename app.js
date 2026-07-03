@@ -29,51 +29,11 @@ const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
 
 const defaultTeams = {
-  pink: {
-    name: "Team Pink",
-    colourName: "pink",
-    colourHex: "#ff4da6",
-    strokes: 0,
-    holesPlayed: 0,
-    penalties: 0,
-    challenges: 0
-  },
-  red: {
-    name: "Team Red",
-    colourName: "red",
-    colourHex: "#ff3b30",
-    strokes: 0,
-    holesPlayed: 0,
-    penalties: 0,
-    challenges: 0
-  },
-  blue: {
-    name: "Team Blue",
-    colourName: "blue",
-    colourHex: "#3b82f6",
-    strokes: 0,
-    holesPlayed: 0,
-    penalties: 0,
-    challenges: 0
-  },
-  yellow: {
-    name: "Team Yellow",
-    colourName: "yellow",
-    colourHex: "#facc15",
-    strokes: 0,
-    holesPlayed: 0,
-    penalties: 0,
-    challenges: 0
-  },
-  green: {
-    name: "Team Green",
-    colourName: "green",
-    colourHex: "#22c55e",
-    strokes: 0,
-    holesPlayed: 0,
-    penalties: 0,
-    challenges: 0
-  }
+  pink: { name: "Team Pink", colourHex: "#ff4da6", strokes: 0, holesPlayed: 0, penalties: 0, challenges: 0 },
+  red: { name: "Team Red", colourHex: "#ff3b30", strokes: 0, holesPlayed: 0, penalties: 0, challenges: 0 },
+  blue: { name: "Team Blue", colourHex: "#3b82f6", strokes: 0, holesPlayed: 0, penalties: 0, challenges: 0 },
+  yellow: { name: "Team Yellow", colourHex: "#facc15", strokes: 0, holesPlayed: 0, penalties: 0, challenges: 0 },
+  green: { name: "Team Green", colourHex: "#22c55e", strokes: 0, holesPlayed: 0, penalties: 0, challenges: 0 }
 };
 
 const defaultSettings = {
@@ -92,16 +52,15 @@ const defaultSettings = {
   }
 };
 
-function normaliseTeam(id, team) {
-  return {
-    id,
-    name: team.name || `Team ${id}`,
-    colourHex: team.colourHex || "#94a3b8",
-    strokes: team.strokes ?? team.totalStrokes ?? team.score ?? 0,
-    holesPlayed: team.holesPlayed ?? 0,
-    penalties: team.penalties ?? team.penaltyStrokes ?? 0,
-    challenges: team.challenges ?? team.challengeBonus ?? 0
-  };
+function showError(message) {
+  leaderboard.innerHTML = `
+    <div class="team-card">
+      <div class="team-main">
+        <h3>Something went wrong</h3>
+        <p class="holes">${message}</p>
+      </div>
+    </div>
+  `;
 }
 
 function medalFor(position) {
@@ -111,69 +70,93 @@ function medalFor(position) {
   return position;
 }
 
-onValue(settingsRef, (snapshot) => {
-  const settings = snapshot.val();
+function normaliseTeam(id, team) {
+  return {
+    id,
+    name: team.name || `Team ${id}`,
+    colourHex: team.colourHex || "#94a3b8",
+    strokes: Number(team.strokes ?? team.totalStrokes ?? team.score ?? 0),
+    holesPlayed: Number(team.holesPlayed ?? 0),
+    penalties: Number(team.penalties ?? team.penaltyStrokes ?? 0),
+    challenges: Number(team.challenges ?? team.challengeBonus ?? 0)
+  };
+}
 
-  if (!settings) {
-    set(settingsRef, defaultSettings);
-    return;
+onValue(
+  settingsRef,
+  (snapshot) => {
+    const settings = snapshot.val();
+
+    if (!settings) {
+      set(settingsRef, defaultSettings);
+      return;
+    }
+
+    const currentHole = settings.currentHole || 1;
+    const totalHoles = settings.totalHoles || 9;
+    const pubs = settings.pubs || {};
+    const currentPub = pubs[currentHole] || `Pub ${currentHole}`;
+
+    holeTitle.textContent = `Hole ${currentHole} of ${totalHoles}`;
+    pubName.textContent = `📍 ${currentPub}`;
+    progressBar.style.width = `${(currentHole / totalHoles) * 100}%`;
+  },
+  (error) => {
+    showError(`Settings error: ${error.message}`);
   }
+);
 
-  const currentHole = settings.currentHole || 1;
-  const totalHoles = settings.totalHoles || 9;
-  const currentPub = settings.pubs?.[currentHole] || `Pub ${currentHole}`;
+onValue(
+  teamsRef,
+  (snapshot) => {
+    const data = snapshot.val();
 
-  holeTitle.textContent = `Hole ${currentHole} of ${totalHoles}`;
-  pubName.textContent = `📍 ${currentPub}`;
-  progressBar.style.width = `${(currentHole / totalHoles) * 100}%`;
-});
+    if (!data) {
+      set(teamsRef, defaultTeams);
+      return;
+    }
 
-onValue(teamsRef, (snapshot) => {
-  const data = snapshot.val();
+    const teams = Object.entries(data)
+      .map(([id, team]) => normaliseTeam(id, team))
+      .sort((a, b) => a.strokes - b.strokes || b.holesPlayed - a.holesPlayed);
 
-  if (!data) {
-    set(teamsRef, defaultTeams);
-    return;
-  }
+    leaderboard.innerHTML = "";
 
-  const teams = Object.entries(data)
-    .map(([id, team]) => normaliseTeam(id, team))
-    .sort((a, b) => a.strokes - b.strokes || b.holesPlayed - a.holesPlayed);
+    teams.forEach((team, index) => {
+      const position = index + 1;
 
-  leaderboard.innerHTML = "";
+      const card = document.createElement("article");
+      card.className = "team-card";
+      card.style.setProperty("--team-colour", team.colourHex);
 
-  teams.forEach((team, index) => {
-    const position = index + 1;
+      card.innerHTML = `
+        <div class="position">${medalFor(position)}</div>
 
-    const card = document.createElement("article");
-    card.className = "team-card";
-    card.style.setProperty("--team-colour", team.colourHex);
+        <div class="team-main">
+          <div class="team-title-row">
+            <span class="team-dot"></span>
+            <h3>${team.name}</h3>
+          </div>
 
-    card.innerHTML = `
-      <div class="position">${medalFor(position)}</div>
-
-      <div class="team-main">
-        <div class="team-title-row">
-          <span class="team-dot"></span>
-          <h3>${team.name}</h3>
+          <p class="holes">${team.holesPlayed}/9 holes played</p>
+          <p class="holes">Challenges: ${team.challenges} • Penalties: +${team.penalties}</p>
         </div>
-        <p class="holes">${team.holesPlayed}/9 holes played</p>
-        <p class="breakdown-line">
-          Challenges: ${team.challenges} • Penalties: +${team.penalties}
-        </p>
-      </div>
 
-      <div class="score-block">
-        <strong>${team.strokes}</strong>
-        <span>strokes</span>
-      </div>
-    `;
+        <div class="score-block">
+          <strong>${team.strokes}</strong>
+          <span>strokes</span>
+        </div>
+      `;
 
-    leaderboard.appendChild(card);
-  });
+      leaderboard.appendChild(card);
+    });
 
-  lastUpdated.textContent = `Last updated ${new Date().toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit"
-  })}`;
-});
+    lastUpdated.textContent = `Last updated ${new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    })}`;
+  },
+  (error) => {
+    showError(`Teams error: ${error.message}`);
+  }
+);

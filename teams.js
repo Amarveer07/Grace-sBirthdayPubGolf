@@ -38,28 +38,28 @@ const teamOrder = ["pink", "red", "blue", "yellow", "green"];
 
 const teamMembers = {
   pink: [
-    { name: "Member 1", photo: "team-photos/pink-1.jpg" },
-    { name: "Member 2", photo: "team-photos/pink-2.jpg" },
+    { name: "Lydia Morton", photo: "team-photos/pink-1.jpg" },
+    { name: "Ben Hartridge", photo: "team-photos/pink-2.jpg" },
     
   ],
   red: [
-    { name: "Member 1", photo: "team-photos/red-1.jpg" },
-    { name: "Member 2", photo: "team-photos/red-2.jpg" },
+    { name: "Maddy Alexander", photo: "team-photos/red-1.jpg" },
+    { name: "Eunice Corpuz", photo: "team-photos/red-2.jpg" },
     
   ],
   blue: [
-    { name: "Member 1", photo: "team-photos/blue-1.jpg" },
-    { name: "Member 2", photo: "team-photos/blue-2.jpg" },
+    { name: "Grace Johnson", photo: "team-photos/blue-1.jpg" },
+    { name: "NUFC Alfie", photo: "team-photos/blue-2.jpg" },
    
   ],
   yellow: [
-    { name: "Member 1", photo: "team-photos/yellow-1.jpg" },
-    { name: "Member 2", photo: "team-photos/yellow-2.jpg" },
+    { name: "Sam Livo", photo: "team-photos/yellow-1.jpg" },
+    { name: "Catherine Mason", photo: "team-photos/yellow-2.jpg" },
     
   ],
   green: [
-    { name: "Member 1", photo: "team-photos/green-1.jpg" },
-    { name: "Member 2", photo: "team-photos/green-2.jpg" },
+    { name: "Zack Rudd", photo: "team-photos/green-1.jpg" },
+    { name: "Madie charlton", photo: "team-photos/green-2.jpg" },
     
   ]
 };

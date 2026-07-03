@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pub Golf Ref</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="kicker">Referee Mode</p>
+      <h1>👨‍⚖️ Pub Golf Admin</h1>
+      <p class="tagline">Update scores live</p>
+    </header>
 
+    <section class="hole-panel">
+      <p class="label">Current hole</p>
+      <h2 id="adminHoleTitle">Hole 1 of 9</h2>
+
+      <label class="admin-label">
+        Pub name
+        <input id="adminPubName" type="text" />
+      </label>
+
+      <button id="savePubName" class="admin-main-button">Save pub name</button>
+
+      <div class="admin-hole-buttons">
+        <button id="previousHole">Previous hole</button>
+        <button id="nextHole">Next hole</button>
+      </div>
+    </section>
+
+    <section class="board-top">
+      <h2>Teams</h2>
+      <button id="resetScores" class="danger-button">Reset scores</button>
+    </section>
+
+    <section id="adminTeams" class="admin-teams">
+      <p class="loading">Loading teams...</p>
+    </section>
+  </main>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

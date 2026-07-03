@@ -1175,3 +1175,43 @@ body::after {
 .teams-gallery {
   gap: 20px;
 }
+/* FULL EVENT RESET */
+
+.full-reset-panel {
+  margin: 18px 0 24px;
+  padding: 18px;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(249, 115, 22, 0.18),
+      rgba(239, 68, 68, 0.12)
+    ),
+    rgba(255, 255, 255, 0.07);
+}
+
+.full-reset-panel h3 {
+  margin: 0 0 6px;
+  color: #fb923c;
+  font-size: 19px;
+}
+
+.full-reset-panel p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.full-reset-button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+}

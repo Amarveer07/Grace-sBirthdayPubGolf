@@ -40,27 +40,27 @@ const teamMembers = {
   pink: [
     { name: "Member 1", photo: "team-photos/pink-1.jpg" },
     { name: "Member 2", photo: "team-photos/pink-2.jpg" },
-    { name: "Member 3", photo: "team-photos/pink-3.jpg" }
+    
   ],
   red: [
     { name: "Member 1", photo: "team-photos/red-1.jpg" },
     { name: "Member 2", photo: "team-photos/red-2.jpg" },
-    { name: "Member 3", photo: "team-photos/red-3.jpg" }
+    
   ],
   blue: [
     { name: "Member 1", photo: "team-photos/blue-1.jpg" },
     { name: "Member 2", photo: "team-photos/blue-2.jpg" },
-    { name: "Member 3", photo: "team-photos/blue-3.jpg" }
+   
   ],
   yellow: [
     { name: "Member 1", photo: "team-photos/yellow-1.jpg" },
     { name: "Member 2", photo: "team-photos/yellow-2.jpg" },
-    { name: "Member 3", photo: "team-photos/yellow-3.jpg" }
+    
   ],
   green: [
     { name: "Member 1", photo: "team-photos/green-1.jpg" },
     { name: "Member 2", photo: "team-photos/green-2.jpg" },
-    { name: "Member 3", photo: "team-photos/green-3.jpg" }
+    
   ]
 };
 

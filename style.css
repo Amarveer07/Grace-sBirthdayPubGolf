@@ -705,3 +705,94 @@ body::before {
 .login-card h1::after {
   content: " 🍻";
 }
+/* EXTRA FESTIVE MODE - MORE OBVIOUS */
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(255, 77, 166, 0.28), rgba(250, 204, 21, 0.18)),
+    rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  padding: 26px 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 0 40px rgba(255, 77, 166, 0.18);
+}
+
+.hero::before {
+  content: "🎉 🍻 🎂 🏌️‍♂️ 🍺 🎊";
+  display: block;
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  color: #fff7ed;
+  font-size: clamp(38px, 10vw, 54px);
+}
+
+.kicker {
+  color: #facc15;
+  font-size: 13px;
+}
+
+.tagline {
+  color: white;
+  font-weight: 700;
+}
+
+.hole-panel {
+  border: 2px solid rgba(250, 204, 21, 0.35);
+  background:
+    linear-gradient(135deg, rgba(255, 77, 166, 0.30), rgba(250, 204, 21, 0.22), rgba(34, 197, 94, 0.20)),
+    rgba(255, 255, 255, 0.08);
+}
+
+.hole-panel h2 {
+  color: #facc15;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.35);
+}
+
+.pub-name {
+  font-weight: 800;
+  color: white;
+}
+
+.team-card {
+  border: 2px solid color-mix(in srgb, var(--team-colour) 42%, rgba(255, 255, 255, 0.16));
+  transform: translateZ(0);
+}
+
+.team-card::after {
+  content: "🍻";
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  font-size: 18px;
+  opacity: 0.28;
+}
+
+.position {
+  font-size: 22px;
+  background: rgba(250, 204, 21, 0.22);
+}
+
+.score-block strong {
+  font-size: 42px;
+}
+
+.board-top {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.board-top h2 {
+  color: #facc15;
+}
+
+.ref-link {
+  background: rgba(250, 204, 21, 0.16);
+  color: #facc15;
+  font-weight: 900;
+}

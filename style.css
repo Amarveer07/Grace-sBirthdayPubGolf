@@ -796,3 +796,166 @@ body::before {
   color: #facc15;
   font-weight: 900;
 }
+/* VERY VISIBLE BIRTHDAY PUB GOLF THEME */
+
+body {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255, 77, 166, 0.35), transparent 28%),
+    radial-gradient(circle at 85% 8%, rgba(250, 204, 21, 0.35), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(34, 197, 94, 0.28), transparent 38%),
+    linear-gradient(180deg, #23051f 0%, #08111f 52%, #0f172a 100%) !important;
+}
+
+.festive-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 26px 18px 22px !important;
+  margin-bottom: 22px;
+  border-radius: 30px;
+  border: 2px solid rgba(250, 204, 21, 0.35);
+  background:
+    linear-gradient(135deg, rgba(255, 77, 166, 0.30), rgba(250, 204, 21, 0.18), rgba(34, 197, 94, 0.16)),
+    rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.35),
+    0 0 45px rgba(255, 77, 166, 0.22);
+}
+
+.festive-hero::before {
+  content: "";
+  position: absolute;
+  inset: -40px;
+  background:
+    radial-gradient(circle, rgba(250, 204, 21, 0.45) 0 3px, transparent 4px),
+    radial-gradient(circle, rgba(255, 77, 166, 0.42) 0 3px, transparent 4px),
+    radial-gradient(circle, rgba(34, 197, 94, 0.38) 0 3px, transparent 4px);
+  background-size: 42px 42px, 55px 55px, 70px 70px;
+  background-position: 0 0, 18px 10px, 30px 24px;
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.festive-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.party-strip {
+  font-size: 26px;
+  letter-spacing: 7px;
+  margin-bottom: 14px;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.festive-hero .kicker {
+  color: #facc15 !important;
+  font-size: 13px;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.55);
+}
+
+.festive-hero h1 {
+  color: #fff7ed;
+  font-size: clamp(40px, 10vw, 56px);
+  text-shadow:
+    0 0 14px rgba(255, 77, 166, 0.45),
+    0 0 28px rgba(250, 204, 21, 0.28);
+}
+
+.festive-hero .tagline {
+  color: white !important;
+  font-weight: 800;
+  margin-top: 12px;
+}
+
+.hero-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.hero-badges span {
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.18);
+  border: 1px solid rgba(250, 204, 21, 0.32);
+  color: #fff7ed;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.hole-panel {
+  border: 2px solid rgba(250, 204, 21, 0.42) !important;
+  background:
+    linear-gradient(135deg, rgba(255, 77, 166, 0.32), rgba(250, 204, 21, 0.20), rgba(34, 197, 94, 0.18)),
+    rgba(255, 255, 255, 0.09) !important;
+}
+
+.hole-panel h2 {
+  color: #facc15;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.40);
+}
+
+.pub-name {
+  color: white !important;
+  font-weight: 900;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #ff4da6, #facc15, #22c55e) !important;
+}
+
+.board-top {
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.board-top h2 {
+  color: #facc15;
+}
+
+.board-top h2::before {
+  content: "🏆 ";
+}
+
+.team-card {
+  border: 2px solid color-mix(in srgb, var(--team-colour) 48%, rgba(255, 255, 255, 0.16)) !important;
+  box-shadow:
+    0 16px 44px rgba(0, 0, 0, 0.32),
+    0 0 28px color-mix(in srgb, var(--team-colour) 26%, transparent) !important;
+}
+
+.team-card::after {
+  content: "🍻";
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  font-size: 20px;
+  opacity: 0.32;
+}
+
+.position {
+  background: rgba(250, 204, 21, 0.22) !important;
+  font-size: 21px;
+}
+
+.score-block strong {
+  color: #facc15;
+  font-size: 42px;
+  text-shadow: 0 0 18px rgba(250, 204, 21, 0.35);
+}
+
+.ref-link {
+  background: rgba(250, 204, 21, 0.16) !important;
+  border: 1px solid rgba(250, 204, 21, 0.30) !important;
+  color: #facc15 !important;
+  font-weight: 900;
+}
+
+.ref-link::before {
+  content: "🔐 ";
+}

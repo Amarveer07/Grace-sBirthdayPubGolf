@@ -7,19 +7,28 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div id="loginScreen" class="login-screen">
     <div class="login-card">
       <h1>👨‍⚖️ Ref Login</h1>
       <p>Enter the referee password.</p>
 
-      <input id="passwordInput" type="password" placeholder="Password" />
+      <input
+        id="passwordInput"
+        type="password"
+        placeholder="Password"
+      />
+
       <button id="loginButton">Enter</button>
 
-      <p id="loginError" class="login-error">Incorrect password.</p>
+      <p id="loginError" class="login-error">
+        Incorrect password.
+      </p>
     </div>
   </div>
 
   <main class="app hidden" id="adminContent">
+
     <header class="hero">
       <p class="kicker">Referee Mode</p>
       <h1>👨‍⚖️ Pub Golf Admin</h1>
@@ -28,72 +37,190 @@
 
     <section class="hole-panel">
       <p class="label">Current Hole</p>
-      <h2 id="adminHoleTitle">Hole 1 of 9</h2>
+
+      <h2 id="adminHoleTitle">
+        Hole 1 of 9
+      </h2>
 
       <label class="admin-label">
-        Pub name
-        <input id="adminPubName" type="text" />
+        Current pub name
+
+        <input
+          id="adminPubName"
+          type="text"
+        />
       </label>
 
-      <button id="savePubName" class="admin-main-button">Save Pub Name</button>
+      <button
+        id="savePubName"
+        class="admin-main-button"
+      >
+        Save Current Pub Name
+      </button>
 
       <div class="admin-hole-buttons">
-        <button id="previousHole">Previous Hole</button>
-        <button id="nextHole">Next Hole</button>
+        <button id="previousHole">
+          Previous Hole
+        </button>
+
+        <button id="nextHole">
+          Next Hole
+        </button>
       </div>
     </section>
 
+    <details class="all-pubs-panel">
+      <summary>
+        🍺 Edit All 9 Pub Names
+      </summary>
+
+      <div class="all-pubs-content">
+
+        <label class="pub-edit-row">
+          <span>Hole 1</span>
+          <input id="pubName1" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 2</span>
+          <input id="pubName2" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 3</span>
+          <input id="pubName3" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 4</span>
+          <input id="pubName4" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 5</span>
+          <input id="pubName5" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 6</span>
+          <input id="pubName6" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 7</span>
+          <input id="pubName7" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 8</span>
+          <input id="pubName8" type="text" />
+        </label>
+
+        <label class="pub-edit-row">
+          <span>Hole 9</span>
+          <input id="pubName9" type="text" />
+        </label>
+
+        <button
+          id="saveAllPubs"
+          class="save-all-pubs-button"
+        >
+          💾 Save All Pub Names
+        </button>
+
+      </div>
+    </details>
+
     <section class="board-top">
       <h2>Teams</h2>
-      <button id="resetScores" class="danger-button">Reset Scores</button>
+
+      <button
+        id="resetScores"
+        class="danger-button"
+      >
+        Reset Scores
+      </button>
     </section>
 
-    <section id="adminTeams" class="admin-teams">
-      <p class="loading">Loading teams...</p>
+    <section
+      id="adminTeams"
+      class="admin-teams"
+    >
+      <p class="loading">
+        Loading teams...
+      </p>
     </section>
 
     <section class="history-panel">
-  <div class="history-header">
-    <h2>History Log</h2>
-    <button id="clearHistory" class="clear-history-button">Clear History</button>
-  </div>
+      <div class="history-header">
+        <h2>History Log</h2>
 
-  <div id="historyList">
-    <p class="admin-small">No history yet.</p>
-  </div>
-</section>
+        <button
+          id="clearHistory"
+          class="clear-history-button"
+        >
+          Clear History
+        </button>
+      </div>
+
+      <div id="historyList">
+        <p class="admin-small">
+          No history yet.
+        </p>
+      </div>
+    </section>
+
   </main>
 
   <script>
-    const PASSWORD = "pubgolf123";
+    const PASSWORD = "pubgolf";
 
-    const loginScreen = document.getElementById("loginScreen");
-    const adminContent = document.getElementById("adminContent");
-    const loginButton = document.getElementById("loginButton");
-    const passwordInput = document.getElementById("passwordInput");
-    const loginError = document.getElementById("loginError");
+    const loginScreen =
+      document.getElementById("loginScreen");
+
+    const adminContent =
+      document.getElementById("adminContent");
+
+    const loginButton =
+      document.getElementById("loginButton");
+
+    const passwordInput =
+      document.getElementById("passwordInput");
+
+    const loginError =
+      document.getElementById("loginError");
 
     function login() {
       if (passwordInput.value === PASSWORD) {
         loginScreen.classList.add("hidden");
         adminContent.classList.remove("hidden");
 
-        const script = document.createElement("script");
+        const script =
+          document.createElement("script");
+
         script.type = "module";
         script.src = "admin.js";
+
         document.body.appendChild(script);
       } else {
         loginError.style.display = "block";
       }
     }
 
-    loginButton.addEventListener("click", login);
+    loginButton.addEventListener(
+      "click",
+      login
+    );
 
-    passwordInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        login();
+    passwordInput.addEventListener(
+      "keydown",
+      function (event) {
+        if (event.key === "Enter") {
+          login();
+        }
       }
-    });
+    );
   </script>
+
 </body>
 </html>

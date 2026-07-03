@@ -18,11 +18,11 @@ const leaderboard = document.getElementById("leaderboard");
 const teamsRef = ref(database, "teams");
 
 const defaultTeams = {
-  team1: { name: "Team 1", score: 0 },
-  team2: { name: "Team 2", score: 0 },
-  team3: { name: "Team 3", score: 0 },
-  team4: { name: "Team 4", score: 0 },
-  team5: { name: "Team 5", score: 0 }
+  teamPink: { name: "Team Pink", score: 0, holesPlayed: 0 },
+  teamRed: { name: "Team Red", score: 0, holesPlayed: 0 },
+  teamBlue: { name: "Team Blue", score: 0, holesPlayed: 0 },
+  teamYellow: { name: "Team Yellow", score: 0, holesPlayed: 0 },
+  teamGreen: { name: "Team Green", score: 0, holesPlayed: 0 }
 };
 
 onValue(teamsRef, (snapshot) => {
@@ -43,9 +43,10 @@ onValue(teamsRef, (snapshot) => {
 
     card.innerHTML = `
       <div class="rank">#${index + 1}</div>
-      <div>
+      <div class="team-info">
         <h2>${team.name}</h2>
-        <p>${team.score} points</p>
+        <p>${team.score} strokes</p>
+        <span>${team.holesPlayed || 0}/9 holes played</span>
       </div>
     `;
 

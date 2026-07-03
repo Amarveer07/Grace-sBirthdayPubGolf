@@ -20,53 +20,59 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const leaderboard = document.getElementById("leaderboard");
-const currentHoleTitle = document.getElementById("currentHoleTitle");
-const currentPubName = document.getElementById("currentPubName");
-const progressFill = document.getElementById("progressFill");
+const holeTitle = document.getElementById("holeTitle");
+const pubName = document.getElementById("pubName");
+const progressBar = document.getElementById("progressBar");
+const lastUpdated = document.getElementById("lastUpdated");
 
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
 
 const defaultTeams = {
-  teamPink: {
+  pink: {
     name: "Team Pink",
-    colour: "pink",
-    totalStrokes: 0,
-    challengeBonus: 0,
-    penaltyStrokes: 0,
-    holesPlayed: 0
+    colourName: "pink",
+    colourHex: "#ff4da6",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
   },
-  teamRed: {
+  red: {
     name: "Team Red",
-    colour: "red",
-    totalStrokes: 0,
-    challengeBonus: 0,
-    penaltyStrokes: 0,
-    holesPlayed: 0
+    colourName: "red",
+    colourHex: "#ff3b30",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
   },
-  teamBlue: {
+  blue: {
     name: "Team Blue",
-    colour: "blue",
-    totalStrokes: 0,
-    challengeBonus: 0,
-    penaltyStrokes: 0,
-    holesPlayed: 0
+    colourName: "blue",
+    colourHex: "#3b82f6",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
   },
-  teamYellow: {
+  yellow: {
     name: "Team Yellow",
-    colour: "yellow",
-    totalStrokes: 0,
-    challengeBonus: 0,
-    penaltyStrokes: 0,
-    holesPlayed: 0
+    colourName: "yellow",
+    colourHex: "#facc15",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
   },
-  teamGreen: {
+  green: {
     name: "Team Green",
-    colour: "green",
-    totalStrokes: 0,
-    challengeBonus: 0,
-    penaltyStrokes: 0,
-    holesPlayed: 0
+    colourName: "green",
+    colourHex: "#22c55e",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
   }
 };
 
@@ -74,17 +80,36 @@ const defaultSettings = {
   currentHole: 1,
   totalHoles: 9,
   pubs: {
-    hole1: "Pub 1",
-    hole2: "Pub 2",
-    hole3: "Pub 3",
-    hole4: "Pub 4",
-    hole5: "Pub 5",
-    hole6: "Pub 6",
-    hole7: "Pub 7",
-    hole8: "Pub 8",
-    hole9: "Pub 9"
+    1: "Pub 1",
+    2: "Pub 2",
+    3: "Pub 3",
+    4: "Pub 4",
+    5: "Pub 5",
+    6: "Pub 6",
+    7: "Pub 7",
+    8: "Pub 8",
+    9: "Pub 9"
   }
 };
+
+function normaliseTeam(id, team) {
+  return {
+    id,
+    name: team.name || `Team ${id}`,
+    colourHex: team.colourHex || "#94a3b8",
+    strokes: team.strokes ?? team.totalStrokes ?? team.score ?? 0,
+    holesPlayed: team.holesPlayed ?? 0,
+    penalties: team.penalties ?? team.penaltyStrokes ?? 0,
+    challenges: team.challenges ?? team.challengeBonus ?? 0
+  };
+}
+
+function medalFor(position) {
+  if (position === 1) return "🥇";
+  if (position === 2) return "🥈";
+  if (position === 3) return "🥉";
+  return position;
+}
 
 onValue(settingsRef, (snapshot) => {
   const settings = snapshot.val();
@@ -96,13 +121,11 @@ onValue(settingsRef, (snapshot) => {
 
   const currentHole = settings.currentHole || 1;
   const totalHoles = settings.totalHoles || 9;
-  const pubName = settings.pubs?.[`hole${currentHole}`] || `Pub ${currentHole}`;
+  const currentPub = settings.pubs?.[currentHole] || `Pub ${currentHole}`;
 
-  currentHoleTitle.textContent = `Hole ${currentHole} of ${totalHoles}`;
-  currentPubName.textContent = pubName;
-
-  const progressPercent = (currentHole / totalHoles) * 100;
-  progressFill.style.width = `${progressPercent}%`;
+  holeTitle.textContent = `Hole ${currentHole} of ${totalHoles}`;
+  pubName.textContent = `📍 ${currentPub}`;
+  progressBar.style.width = `${(currentHole / totalHoles) * 100}%`;
 });
 
 onValue(teamsRef, (snapshot) => {
@@ -114,39 +137,40 @@ onValue(teamsRef, (snapshot) => {
   }
 
   const teams = Object.entries(data)
-    .map(([id, team]) => ({
-      id,
-      ...team,
-      totalStrokes: team.totalStrokes ?? team.score ?? 0,
-      challengeBonus: team.challengeBonus ?? 0,
-      penaltyStrokes: team.penaltyStrokes ?? 0,
-      holesPlayed: team.holesPlayed ?? 0
-    }))
-    .sort((a, b) => a.totalStrokes - b.totalStrokes);
+    .map(([id, team]) => normaliseTeam(id, team))
+    .sort((a, b) => a.strokes - b.strokes || b.holesPlayed - a.holesPlayed);
 
   leaderboard.innerHTML = "";
 
   teams.forEach((team, index) => {
-    const card = document.createElement("div");
-    card.className = `team-card ${team.id}`;
+    const position = index + 1;
 
-    const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`;
+    const card = document.createElement("article");
+    card.className = "team-card";
+    card.style.setProperty("--team-colour", team.colourHex);
 
     card.innerHTML = `
-      <div class="rank">${medal}</div>
+      <div class="position">${medalFor(position)}</div>
 
-      <div class="team-info">
-        <h3>${team.name}</h3>
-        <p>${team.totalStrokes} strokes</p>
-        <span>${team.holesPlayed}/9 holes played</span>
+      <div class="team-main">
+        <div class="team-title-row">
+          <span class="team-dot"></span>
+          <h3>${team.name}</h3>
+        </div>
+        <p class="holes">${team.holesPlayed}/9 holes played</p>
       </div>
 
-      <div class="breakdown">
-        <span>Challenge: ${team.challengeBonus}</span>
-        <span>Penalties: +${team.penaltyStrokes}</span>
+      <div class="score-block">
+        <strong>${team.strokes}</strong>
+        <span>strokes</span>
       </div>
     `;
 
     leaderboard.appendChild(card);
   });
+
+  lastUpdated.textContent = `Last updated ${new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  })}`;
 });

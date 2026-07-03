@@ -484,3 +484,44 @@ h1 {
     width: 100%;
   }
 }
+.quick-score-box {
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.quick-score-box label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quick-score-box input {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.big-action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.big-action-grid button {
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: #facc15;
+  color: #07111f;
+  font-size: 16px;
+  font-weight: 900;
+}

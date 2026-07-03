@@ -524,3 +524,51 @@ function renderHistory(history) {
     historyList.appendChild(item);
   });
 }
+// EDIT ALL 9 PUB NAMES
+
+function fillAllPubInputs(settings) {
+  for (let hole = 1; hole <= 9; hole++) {
+    const input = document.getElementById(`pubName${hole}`);
+
+    if (!input) continue;
+
+    input.value =
+      settings?.pubs?.[hole] ||
+      `Pub ${hole}`;
+  }
+}
+
+onValue(settingsRef, (snapshot) => {
+  const settings = snapshot.val();
+
+  if (!settings) return;
+
+  fillAllPubInputs(settings);
+});
+
+const saveAllPubsButton =
+  document.getElementById("saveAllPubs");
+
+if (saveAllPubsButton) {
+  saveAllPubsButton.addEventListener("click", async () => {
+    const updates = {};
+
+    for (let hole = 1; hole <= 9; hole++) {
+      const input =
+        document.getElementById(`pubName${hole}`);
+
+      const name =
+        input.value.trim() ||
+        `Pub ${hole}`;
+
+      updates[`pubs/${hole}`] = name;
+    }
+
+    await updateSettingsWithUndo(
+      updates,
+      "All 9 pub names updated"
+    );
+
+    alert("All 9 pub names saved!");
+  });
+}

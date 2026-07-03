@@ -28,8 +28,8 @@ const lastUpdated = document.getElementById("lastUpdated");
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
 
+const teamCards = new Map();
 const previousScores = new Map();
-const previousRanks = new Map();
 
 const defaultTeams = {
   pink: {
@@ -117,8 +117,14 @@ function medalFor(position) {
 function normaliseTeam(id, team) {
   return {
     id,
-    name: team.name || `Team ${id}`,
-    colourHex: team.colourHex || "#94a3b8",
+
+    name:
+      team.name ||
+      `Team ${id}`,
+
+    colourHex:
+      team.colourHex ||
+      "#94a3b8",
 
     strokes: Number(
       team.strokes ??
@@ -128,7 +134,8 @@ function normaliseTeam(id, team) {
     ),
 
     holesPlayed: Number(
-      team.holesPlayed ?? 0
+      team.holesPlayed ??
+      0
     ),
 
     penalties: Number(
@@ -145,125 +152,208 @@ function normaliseTeam(id, team) {
   };
 }
 
-function getCurrentCardPositions() {
-  const positions = new Map();
+function createTeamCard(teamId) {
+  const card = document.createElement("article");
 
-  document
-    .querySelectorAll(".team-card[data-team-id]")
-    .forEach((card) => {
-      positions.set(
-        card.dataset.teamId,
+  card.className = "team-card";
+  card.dataset.teamId = teamId;
+
+  teamCards.set(teamId, card);
+
+  return card;
+}
+
+function updateTeamCard(card, team, position) {
+  card.style.setProperty(
+    "--team-colour",
+    team.colourHex
+  );
+
+  card.innerHTML = `
+    <div class="position">
+      ${medalFor(position)}
+    </div>
+
+    <div class="team-main">
+
+      <div class="team-title-row">
+        <span class="team-dot"></span>
+        <h3>${team.name}</h3>
+      </div>
+
+      <p class="holes">
+        ${team.holesPlayed}/9 holes played
+      </p>
+
+      <p class="holes">
+        Challenges: ${team.challenges}
+        •
+        Penalties: +${team.penalties}
+      </p>
+
+    </div>
+
+    <div class="score-block">
+      <strong>${team.strokes}</strong>
+      <span>strokes</span>
+    </div>
+  `;
+}
+
+function animateScore(card, team) {
+  const oldScore = previousScores.get(team.id);
+
+  if (
+    oldScore === undefined ||
+    oldScore === team.strokes
+  ) {
+    return;
+  }
+
+  const scoreNumber =
+    card.querySelector(".score-block strong");
+
+  if (!scoreNumber) return;
+
+  scoreNumber.style.transition = "none";
+  scoreNumber.style.transform = "scale(1.4)";
+
+  requestAnimationFrame(() => {
+    scoreNumber.style.transition =
+      "transform 450ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+    scoreNumber.style.transform =
+      "scale(1)";
+  });
+}
+
+function renderLeaderboard(teams) {
+  const oldPositions = new Map();
+
+  teamCards.forEach((card, teamId) => {
+    if (card.isConnected) {
+      oldPositions.set(
+        teamId,
         card.getBoundingClientRect()
       );
-    });
-
-  return positions;
-}
-
-function animateLeaderboard(oldPositions) {
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (reduceMotion) return;
-
-  document
-    .querySelectorAll(".team-card[data-team-id]")
-    .forEach((card) => {
-      const teamId = card.dataset.teamId;
-      const oldPosition = oldPositions.get(teamId);
-
-      if (!oldPosition) return;
-
-      const newPosition = card.getBoundingClientRect();
-
-      const moveX = oldPosition.left - newPosition.left;
-      const moveY = oldPosition.top - newPosition.top;
-
-      if (moveX === 0 && moveY === 0) return;
-
-      card.animate(
-        [
-          {
-            transform: `translate(${moveX}px, ${moveY}px)`,
-            zIndex: 10
-          },
-          {
-            transform: "translate(0, 0)",
-            zIndex: 1
-          }
-        ],
-        {
-          duration: 650,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)"
-        }
-      );
-    });
-}
-
-function animateScoreChange(card, team) {
-  const previousScore = previousScores.get(team.id);
-
-  if (
-    previousScore === undefined ||
-    previousScore === team.strokes
-  ) {
-    return;
-  }
-
-  const score = card.querySelector(".score-block strong");
-
-  if (!score) return;
-
-  score.animate(
-    [
-      {
-        transform: "scale(1)",
-        color: "#facc15"
-      },
-      {
-        transform: "scale(1.35)",
-        color: "#ffffff"
-      },
-      {
-        transform: "scale(1)",
-        color: "#facc15"
-      }
-    ],
-    {
-      duration: 500,
-      easing: "ease-out"
     }
-  );
-}
+  });
 
-function animateRankChange(card, teamId, newRank) {
-  const oldRank = previousRanks.get(teamId);
+  const activeTeamIds = new Set();
 
-  if (
-    oldRank === undefined ||
-    oldRank === newRank
-  ) {
-    return;
-  }
+  teams.forEach((team, index) => {
+    const position = index + 1;
 
-  card.animate(
-    [
-      {
-        boxShadow: "0 0 0 rgba(250, 204, 21, 0)"
-      },
-      {
-        boxShadow: "0 0 34px rgba(250, 204, 21, 0.55)"
-      },
-      {
-        boxShadow: "0 16px 44px rgba(0, 0, 0, 0.32)"
-      }
-    ],
-    {
-      duration: 800,
-      easing: "ease-out"
+    activeTeamIds.add(team.id);
+
+    let card = teamCards.get(team.id);
+
+    if (!card) {
+      card = createTeamCard(team.id);
     }
-  );
+
+    updateTeamCard(
+      card,
+      team,
+      position
+    );
+
+    /*
+      appendChild moves an existing card
+      instead of creating a new one.
+    */
+    leaderboard.appendChild(card);
+  });
+
+  teamCards.forEach((card, teamId) => {
+    if (!activeTeamIds.has(teamId)) {
+      card.remove();
+      teamCards.delete(teamId);
+    }
+  });
+
+  const movements = [];
+
+  teams.forEach((team) => {
+    const card = teamCards.get(team.id);
+    const oldPosition = oldPositions.get(team.id);
+
+    if (!card || !oldPosition) return;
+
+    const newPosition =
+      card.getBoundingClientRect();
+
+    const moveX =
+      oldPosition.left -
+      newPosition.left;
+
+    const moveY =
+      oldPosition.top -
+      newPosition.top;
+
+    if (
+      Math.abs(moveX) < 1 &&
+      Math.abs(moveY) < 1
+    ) {
+      return;
+    }
+
+    movements.push({
+      card,
+      moveX,
+      moveY
+    });
+  });
+
+  /*
+    Move each card visually back to where
+    it used to be.
+  */
+  movements.forEach((movement) => {
+    movement.card.style.transition = "none";
+
+    movement.card.style.transform =
+      `translate(${movement.moveX}px, ${movement.moveY}px)`;
+
+    movement.card.style.zIndex = "10";
+  });
+
+  /*
+    Force the browser to recognise
+    the starting positions.
+  */
+  leaderboard.getBoundingClientRect();
+
+  /*
+    Then slide the cards into their
+    new ranking positions.
+  */
+  requestAnimationFrame(() => {
+    movements.forEach((movement) => {
+      movement.card.style.transition =
+        "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)";
+
+      movement.card.style.transform =
+        "translate(0, 0)";
+
+      setTimeout(() => {
+        movement.card.style.zIndex = "";
+      }, 850);
+    });
+  });
+
+  teams.forEach((team) => {
+    const card = teamCards.get(team.id);
+
+    if (card) {
+      animateScore(card, team);
+    }
+
+    previousScores.set(
+      team.id,
+      team.strokes
+    );
+  });
 }
 
 onValue(
@@ -273,13 +363,25 @@ onValue(
     const settings = snapshot.val();
 
     if (!settings) {
-      set(settingsRef, defaultSettings);
+      set(
+        settingsRef,
+        defaultSettings
+      );
+
       return;
     }
 
-    const currentHole = settings.currentHole || 1;
-    const totalHoles = settings.totalHoles || 9;
-    const pubs = settings.pubs || {};
+    const currentHole =
+      settings.currentHole ||
+      1;
+
+    const totalHoles =
+      settings.totalHoles ||
+      9;
+
+    const pubs =
+      settings.pubs ||
+      {};
 
     const currentPub =
       pubs[currentHole] ||
@@ -296,7 +398,9 @@ onValue(
   },
 
   (error) => {
-    showError(`Settings error: ${error.message}`);
+    showError(
+      `Settings error: ${error.message}`
+    );
   }
 );
 
@@ -307,93 +411,26 @@ onValue(
     const data = snapshot.val();
 
     if (!data) {
-      set(teamsRef, defaultTeams);
+      set(
+        teamsRef,
+        defaultTeams
+      );
+
       return;
     }
-
-    const oldPositions = getCurrentCardPositions();
 
     const teams = Object.entries(data)
       .map(([id, team]) =>
         normaliseTeam(id, team)
       )
+
       .sort(
         (a, b) =>
           a.strokes - b.strokes ||
           b.holesPlayed - a.holesPlayed
       );
 
-    leaderboard.innerHTML = "";
-
-    teams.forEach((team, index) => {
-      const position = index + 1;
-
-      const card = document.createElement("article");
-
-      card.className = "team-card";
-      card.dataset.teamId = team.id;
-
-      card.style.setProperty(
-        "--team-colour",
-        team.colourHex
-      );
-
-      card.innerHTML = `
-        <div class="position">
-          ${medalFor(position)}
-        </div>
-
-        <div class="team-main">
-          <div class="team-title-row">
-            <span class="team-dot"></span>
-            <h3>${team.name}</h3>
-          </div>
-
-          <p class="holes">
-            ${team.holesPlayed}/9 holes played
-          </p>
-
-          <p class="holes">
-            Challenges: ${team.challenges}
-            •
-            Penalties: +${team.penalties}
-          </p>
-        </div>
-
-        <div class="score-block">
-          <strong>${team.strokes}</strong>
-          <span>strokes</span>
-        </div>
-      `;
-
-      leaderboard.appendChild(card);
-
-      animateScoreChange(card, team);
-
-      animateRankChange(
-        card,
-        team.id,
-        position
-      );
-    });
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        animateLeaderboard(oldPositions);
-      });
-    });
-
-    teams.forEach((team, index) => {
-      previousScores.set(
-        team.id,
-        team.strokes
-      );
-
-      previousRanks.set(
-        team.id,
-        index + 1
-      );
-    });
+    renderLeaderboard(teams);
 
     lastUpdated.textContent =
       `Last updated ${new Date().toLocaleTimeString([], {
@@ -403,6 +440,8 @@ onValue(
   },
 
   (error) => {
-    showError(`Teams error: ${error.message}`);
+    showError(
+      `Teams error: ${error.message}`
+    );
   }
 );

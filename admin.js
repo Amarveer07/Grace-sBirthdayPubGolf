@@ -90,7 +90,7 @@ function renderTeams() {
 
       <div class="quick-score-box">
         <label>Score change</label>
-        <input type="number" inputmode="numeric" id="score-${teamId}" placeholder="e.g. 5 or -2" />
+        <input type="text" inputmode="numeric" id="score-${teamId}" placeholder="e.g. 5 or -2" />
 
         <div class="big-action-grid">
           <button data-action="strokes" data-team="${teamId}" data-input="score-${teamId}">➕ Strokes</button>
@@ -143,9 +143,8 @@ adminTeams.addEventListener("click", async (event) => {
 
   if (action === "strokes" || action === "penalty" || action === "challenge") {
     const input = document.getElementById(button.dataset.input);
-    const value = Number(input.value);
-
-    if (!value) {
+const value = parseInt(input.value, 10);
+    if (Number.isNaN(value) || value === 0) {
       alert("Enter a number first.");
       return;
     }

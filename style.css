@@ -255,3 +255,42 @@ h1 {
 .ref-link:hover {
   color: #facc15;
 }
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #07111f;
+  color: white;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  padding: 24px;
+  text-align: center;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 14px;
+  margin: 16px 0;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #facc15;
+  color: #07111f;
+  font-weight: bold;
+  font-size: 16px;
+}

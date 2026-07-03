@@ -8,8 +8,26 @@
 </head>
 <body>
   <main class="app">
-    <h1>🏌️ Pub Golf Scoreboard</h1>
-    <p class="subtitle">Live team scores</p>
+    <header class="hero">
+      <p class="eyebrow">Birthday Pub Golf</p>
+      <h1>🏌️ Live Scoreboard</h1>
+      <p class="subtitle">Lowest score wins. Updates live.</p>
+    </header>
+
+    <section class="current-hole-card">
+      <p class="small-label">Current hole</p>
+      <h2 id="currentHoleTitle">Hole 1 of 9</h2>
+      <p id="currentPubName">Pub 1</p>
+
+      <div class="progress-track">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <section class="leaderboard-header">
+      <h2>Leaderboard</h2>
+      <span>🏆</span>
+    </section>
 
     <section id="leaderboard" class="leaderboard">
       <p>Loading scores...</p>

@@ -60,8 +60,7 @@ onValue(teamsRef, (snapshot) => {
 });
 
 onValue(historyRef, (snapshot) => {
-  const history = snapshot.val() || {};
-  renderHistory(history);
+  renderHistory(snapshot.val() || {});
 });
 
 function renderHoleControls() {
@@ -77,8 +76,8 @@ function renderTeams() {
   adminTeams.innerHTML = "";
 
   Object.entries(teamsData).forEach(([teamId, team]) => {
-    const strokes = team.strokes ?? team.totalStrokes ?? team.score ?? 0;
-    const holesPlayed = team.holesPlayed ?? 0;
+    const strokes = Number(team.strokes ?? team.totalStrokes ?? team.score ?? 0);
+    const holesPlayed = Number(team.holesPlayed ?? 0);
 
     const card = document.createElement("section");
     card.className = "admin-team-card";
@@ -89,25 +88,20 @@ function renderTeams() {
       <p class="admin-score">${strokes} strokes</p>
       <p class="admin-small">${holesPlayed}/9 holes played</p>
 
-      <div class="custom-control">
-        <label>Add strokes</label>
-        <input type="number" min="0" inputmode="numeric" id="strokes-${teamId}" placeholder="e.g. 5">
-        <button data-action="strokes" data-team="${teamId}" data-input="strokes-${teamId}">Add</button>
+      <div class="quick-score-box">
+        <label>Score change</label>
+        <input type="number" inputmode="numeric" id="score-${teamId}" placeholder="e.g. 5 or -2" />
+
+        <div class="big-action-grid">
+          <button data-action="strokes" data-team="${teamId}" data-input="score-${teamId}">➕ Strokes</button>
+          <button data-action="penalty" data-team="${teamId}" data-input="score-${teamId}">⚠️ Penalty</button>
+          <button data-action="challenge" data-team="${teamId}" data-input="score-${teamId}">🏆 Challenge</button>
+        </div>
       </div>
 
-      <div class="custom-control">
-        <label>Penalty</label>
-        <input type="number" min="0" inputmode="numeric" id="penalty-${teamId}" placeholder="e.g. 2">
-        <button data-action="penalty" data-team="${teamId}" data-input="penalty-${teamId}">Add penalty</button>
-      </div>
-
-      <div class="custom-control">
-        <label>Challenge</label>
-        <input type="number" min="0" inputmode="numeric" id="challenge-${teamId}" placeholder="e.g. 1">
-        <button data-action="challenge" data-team="${teamId}" data-input="challenge-${teamId}">Apply</button>
-      </div>
-
-      <button class="admin-main-button" data-action="hole" data-team="${teamId}">Mark hole completed</button>
+      <button class="admin-main-button" data-action="hole" data-team="${teamId}">
+        Mark hole completed
+      </button>
 
       <label class="admin-label">
         Team name
@@ -126,6 +120,12 @@ async function addHistory(text) {
   });
 }
 
+function vibrate() {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(40);
+  }
+}
+
 adminTeams.addEventListener("click", async (event) => {
   const button = event.target.closest("button");
   if (!button) return;
@@ -136,17 +136,17 @@ adminTeams.addEventListener("click", async (event) => {
 
   if (!team) return;
 
-  const currentStrokes = team.strokes ?? team.totalStrokes ?? team.score ?? 0;
-  const currentPenalties = team.penalties ?? team.penaltyStrokes ?? 0;
-  const currentChallenges = team.challenges ?? team.challengeBonus ?? 0;
-  const currentHoles = team.holesPlayed ?? 0;
+  const currentStrokes = Number(team.strokes ?? team.totalStrokes ?? team.score ?? 0);
+  const currentPenalties = Number(team.penalties ?? team.penaltyStrokes ?? 0);
+  const currentChallenges = Number(team.challenges ?? team.challengeBonus ?? 0);
+  const currentHoles = Number(team.holesPlayed ?? 0);
 
   if (action === "strokes" || action === "penalty" || action === "challenge") {
     const input = document.getElementById(button.dataset.input);
     const value = Number(input.value);
 
-    if (!value || value <= 0) {
-      alert("Enter a number bigger than 0.");
+    if (!value) {
+      alert("Enter a number first.");
       return;
     }
 
@@ -155,28 +155,33 @@ adminTeams.addEventListener("click", async (event) => {
         strokes: currentStrokes + value
       });
 
-      await addHistory(`${team.name} +${value} strokes`);
+      await addHistory(`${team.name} ${value > 0 ? "+" : ""}${value} strokes`);
     }
 
     if (action === "penalty") {
+      const penaltyValue = Math.abs(value);
+
       await update(ref(database, `teams/${teamId}`), {
-        strokes: currentStrokes + value,
-        penalties: currentPenalties + value
+        strokes: currentStrokes + penaltyValue,
+        penalties: currentPenalties + penaltyValue
       });
 
-      await addHistory(`${team.name} +${value} penalty`);
+      await addHistory(`${team.name} +${penaltyValue} penalty`);
     }
 
     if (action === "challenge") {
+      const challengeValue = Math.abs(value);
+
       await update(ref(database, `teams/${teamId}`), {
-        strokes: currentStrokes - value,
-        challenges: currentChallenges - value
+        strokes: currentStrokes - challengeValue,
+        challenges: currentChallenges - challengeValue
       });
 
-      await addHistory(`${team.name} -${value} challenge`);
+      await addHistory(`${team.name} -${challengeValue} challenge`);
     }
 
     input.value = "";
+    vibrate();
   }
 
   if (action === "hole") {
@@ -185,6 +190,7 @@ adminTeams.addEventListener("click", async (event) => {
     });
 
     await addHistory(`${team.name} completed a hole`);
+    vibrate();
   }
 });
 

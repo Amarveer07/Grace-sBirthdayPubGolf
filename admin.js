@@ -572,3 +572,45 @@ if (saveAllPubsButton) {
     alert("All 9 pub names saved!");
   });
 }
+// FULL EVENT RESET
+
+const fullEventResetButton =
+  document.getElementById("fullEventReset");
+
+if (fullEventResetButton) {
+  fullEventResetButton.addEventListener("click", async () => {
+    const confirmation = prompt(
+      'This will clear all scores, progress and history.\n\nType RESET to continue.'
+    );
+
+    if (confirmation !== "RESET") {
+      return;
+    }
+
+    const snapshot = await get(teamsRef);
+    const teams = snapshot.val() || {};
+
+    const freshTeams = {};
+
+    Object.entries(teams).forEach(([teamId, team]) => {
+      freshTeams[teamId] = {
+        ...team,
+        strokes: 0,
+        holesPlayed: 0,
+        penalties: 0,
+        challenges: 0
+      };
+    });
+
+    await set(teamsRef, freshTeams);
+
+    await update(settingsRef, {
+      currentHole: 1
+    });
+
+    await set(historyRef, null);
+    await set(undoRef, null);
+
+    alert("Fresh event ready! Everything has been reset.");
+  });
+}

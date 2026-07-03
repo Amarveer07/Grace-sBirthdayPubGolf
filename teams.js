@@ -59,7 +59,7 @@ const teamMembers = {
   ],
   green: [
     { name: "Zack Rudd", photo: "team-photos/green-1.jpg" },
-    { name: "Madie charlton", photo: "team-photos/green-2.jpg" },
+    { name: "Madie Charlton", photo: "team-photos/green-2.jpg" },
     
   ]
 };

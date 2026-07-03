@@ -1035,3 +1035,101 @@ body::after {
   border-radius: 999px;
   padding: 8px 10px;
 }
+/* TEAM GALLERY PAGE */
+
+.teams-link {
+  display: block;
+  width: fit-content;
+  margin: 24px auto 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(250, 204, 21, 0.16);
+  border: 1px solid rgba(250, 204, 21, 0.30);
+  color: #facc15;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.teams-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.team-gallery-card {
+  --team-colour: #94a3b8;
+  padding: 18px;
+  border-radius: 26px;
+  border: 2px solid color-mix(in srgb, var(--team-colour) 50%, rgba(255, 255, 255, 0.16));
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--team-colour) 24%, transparent), rgba(255, 255, 255, 0.08)),
+    rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 16px 44px rgba(0, 0, 0, 0.30),
+    0 0 28px color-mix(in srgb, var(--team-colour) 20%, transparent);
+}
+
+.gallery-team-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.gallery-team-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.member-card {
+  text-align: center;
+}
+
+.member-photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.member-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at top left, var(--team-colour), transparent 70%),
+    rgba(255, 255, 255, 0.10);
+  color: white;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.member-card p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 800;
+}
+
+@media (max-width: 420px) {
+  .member-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

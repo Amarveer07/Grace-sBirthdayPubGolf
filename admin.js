@@ -25,43 +25,121 @@ const database = getDatabase(app);
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
 const historyRef = ref(database, "history");
+const undoRef = ref(database, "undo/lastAction");
 
 const adminTeams = document.getElementById("adminTeams");
 const historyList = document.getElementById("historyList");
 const holeTitle = document.getElementById("adminHoleTitle");
 const pubName = document.getElementById("adminPubName");
+const resetScoresButton = document.getElementById("resetScores");
 
 let teamsData = {};
 let settingsData = {};
 
-onValue(settingsRef, (snapshot) => {
-  settingsData = snapshot.val() || {
-    currentHole: 1,
-    totalHoles: 9,
-    pubs: {
-      1: "Pub 1",
-      2: "Pub 2",
-      3: "Pub 3",
-      4: "Pub 4",
-      5: "Pub 5",
-      6: "Pub 6",
-      7: "Pub 7",
-      8: "Pub 8",
-      9: "Pub 9"
-    }
-  };
+const teamOrder = ["pink", "red", "blue", "yellow", "green"];
 
+const defaultTeams = {
+  pink: {
+    name: "Team Pink",
+    colourHex: "#ff4da6",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
+  },
+  red: {
+    name: "Team Red",
+    colourHex: "#ff3b30",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
+  },
+  blue: {
+    name: "Team Blue",
+    colourHex: "#3b82f6",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
+  },
+  yellow: {
+    name: "Team Yellow",
+    colourHex: "#facc15",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
+  },
+  green: {
+    name: "Team Green",
+    colourHex: "#22c55e",
+    strokes: 0,
+    holesPlayed: 0,
+    penalties: 0,
+    challenges: 0
+  }
+};
+
+const defaultSettings = {
+  currentHole: 1,
+  totalHoles: 9,
+  pubs: {
+    1: "Pub 1",
+    2: "Pub 2",
+    3: "Pub 3",
+    4: "Pub 4",
+    5: "Pub 5",
+    6: "Pub 6",
+    7: "Pub 7",
+    8: "Pub 8",
+    9: "Pub 9"
+  }
+};
+
+createUndoButton();
+
+onValue(settingsRef, async (snapshot) => {
+  const settings = snapshot.val();
+
+  if (!settings) {
+    await set(settingsRef, defaultSettings);
+    return;
+  }
+
+  settingsData = settings;
   renderHoleControls();
 });
 
-onValue(teamsRef, (snapshot) => {
-  teamsData = snapshot.val() || {};
+onValue(teamsRef, async (snapshot) => {
+  const teams = snapshot.val();
+
+  if (!teams) {
+    await set(teamsRef, defaultTeams);
+    return;
+  }
+
+  teamsData = teams;
   renderTeams();
 });
 
 onValue(historyRef, (snapshot) => {
   renderHistory(snapshot.val() || {});
 });
+
+function createUndoButton() {
+  if (!resetScoresButton) return;
+  if (document.getElementById("undoLastAction")) return;
+
+  const undoButton = document.createElement("button");
+  undoButton.id = "undoLastAction";
+  undoButton.className = "undo-button";
+  undoButton.textContent = "↩️ Undo Last Action";
+
+  resetScoresButton.parentElement.appendChild(undoButton);
+
+  undoButton.addEventListener("click", undoLastAction);
+}
 
 function renderHoleControls() {
   const currentHole = settingsData.currentHole || 1;
@@ -75,9 +153,15 @@ function renderHoleControls() {
 function renderTeams() {
   adminTeams.innerHTML = "";
 
-  Object.entries(teamsData).forEach(([teamId, team]) => {
+  const entries = Object.entries(teamsData).sort((a, b) => {
+    return teamOrder.indexOf(a[0]) - teamOrder.indexOf(b[0]);
+  });
+
+  entries.forEach(([teamId, team]) => {
     const strokes = Number(team.strokes ?? team.totalStrokes ?? team.score ?? 0);
     const holesPlayed = Number(team.holesPlayed ?? 0);
+    const penalties = Number(team.penalties ?? team.penaltyStrokes ?? 0);
+    const challenges = Number(team.challenges ?? team.challengeBonus ?? 0);
 
     const card = document.createElement("section");
     card.className = "admin-team-card";
@@ -85,17 +169,34 @@ function renderTeams() {
 
     card.innerHTML = `
       <h3>${team.name}</h3>
+
       <p class="admin-score">${strokes} strokes</p>
-      <p class="admin-small">${holesPlayed}/9 holes played</p>
+      <p class="admin-small">
+        ${holesPlayed}/9 holes played • Challenges: ${challenges} • Penalties: +${penalties}
+      </p>
 
       <div class="quick-score-box">
         <label>Score change</label>
-        <input type="text" inputmode="numeric" id="score-${teamId}" placeholder="e.g. 5 or -2" />
+        <input 
+          type="text" 
+          inputmode="text" 
+          id="score-${teamId}" 
+          placeholder="e.g. 5 or -2" 
+          autocomplete="off"
+        />
 
         <div class="big-action-grid">
-          <button data-action="strokes" data-team="${teamId}" data-input="score-${teamId}">➕ Strokes</button>
-          <button data-action="penalty" data-team="${teamId}" data-input="score-${teamId}">⚠️ Penalty</button>
-          <button data-action="challenge" data-team="${teamId}" data-input="score-${teamId}">🏆 Challenge</button>
+          <button data-action="strokes" data-team="${teamId}" data-input="score-${teamId}">
+            ➕ Strokes
+          </button>
+
+          <button data-action="penalty" data-team="${teamId}" data-input="score-${teamId}">
+            ⚠️ Penalty
+          </button>
+
+          <button data-action="challenge" data-team="${teamId}" data-input="score-${teamId}">
+            🏆 Challenge
+          </button>
         </div>
       </div>
 
@@ -113,9 +214,26 @@ function renderTeams() {
   });
 }
 
-async function addHistory(text) {
+function getScoreValue(inputId) {
+  const input = document.getElementById(inputId);
+  const rawValue = input.value.trim();
+  const value = Number(rawValue);
+
+  if (!rawValue || !Number.isInteger(value) || value === 0) {
+    alert("Enter a whole number, for example 5 or -2.");
+    return null;
+  }
+
+  return {
+    input,
+    value
+  };
+}
+
+async function addHistory(text, type = "info") {
   await push(historyRef, {
     text,
+    type,
     time: Date.now()
   });
 }
@@ -124,6 +242,47 @@ function vibrate() {
   if ("vibrate" in navigator) {
     navigator.vibrate(40);
   }
+}
+
+async function saveUndo(action) {
+  await set(undoRef, {
+    ...action,
+    time: Date.now()
+  });
+}
+
+async function updateTeamWithUndo(teamId, updates, historyText, historyType) {
+  const teamRef = ref(database, `teams/${teamId}`);
+  const beforeSnapshot = await get(teamRef);
+  const before = beforeSnapshot.val();
+
+  await update(teamRef, updates);
+
+  await saveUndo({
+    kind: "team",
+    teamId,
+    before,
+    description: historyText
+  });
+
+  await addHistory(historyText, historyType);
+  vibrate();
+}
+
+async function updateSettingsWithUndo(updates, historyText) {
+  const beforeSnapshot = await get(settingsRef);
+  const before = beforeSnapshot.val();
+
+  await update(settingsRef, updates);
+
+  await saveUndo({
+    kind: "settings",
+    before,
+    description: historyText
+  });
+
+  await addHistory(historyText, "settings");
+  vibrate();
 }
 
 adminTeams.addEventListener("click", async (event) => {
@@ -141,55 +300,73 @@ adminTeams.addEventListener("click", async (event) => {
   const currentChallenges = Number(team.challenges ?? team.challengeBonus ?? 0);
   const currentHoles = Number(team.holesPlayed ?? 0);
 
-  if (action === "strokes" || action === "penalty" || action === "challenge") {
-    const input = document.getElementById(button.dataset.input);
-const value = parseInt(input.value, 10);
-    if (Number.isNaN(value) || value === 0) {
-      alert("Enter a number first.");
-      return;
-    }
+  if (action === "strokes") {
+    const result = getScoreValue(button.dataset.input);
+    if (!result) return;
 
-    if (action === "strokes") {
-      await update(ref(database, `teams/${teamId}`), {
+    const { input, value } = result;
+
+    await updateTeamWithUndo(
+      teamId,
+      {
         strokes: currentStrokes + value
-      });
-
-      await addHistory(`${team.name} ${value > 0 ? "+" : ""}${value} strokes`);
-    }
-
-    if (action === "penalty") {
-      const penaltyValue = Math.abs(value);
-
-      await update(ref(database, `teams/${teamId}`), {
-        strokes: currentStrokes + penaltyValue,
-        penalties: currentPenalties + penaltyValue
-      });
-
-      await addHistory(`${team.name} +${penaltyValue} penalty`);
-    }
-
-    if (action === "challenge") {
-      const challengeValue = Math.abs(value);
-
-      await update(ref(database, `teams/${teamId}`), {
-        strokes: currentStrokes - challengeValue,
-        challenges: currentChallenges - challengeValue
-      });
-
-      await addHistory(`${team.name} -${challengeValue} challenge`);
-    }
+      },
+      `${team.name} ${value > 0 ? "+" : ""}${value} strokes`,
+      "strokes"
+    );
 
     input.value = "";
-    vibrate();
+  }
+
+  if (action === "penalty") {
+    const result = getScoreValue(button.dataset.input);
+    if (!result) return;
+
+    const { input, value } = result;
+    const penaltyValue = Math.abs(value);
+
+    await updateTeamWithUndo(
+      teamId,
+      {
+        strokes: currentStrokes + penaltyValue,
+        penalties: currentPenalties + penaltyValue
+      },
+      `${team.name} +${penaltyValue} penalty`,
+      "penalty"
+    );
+
+    input.value = "";
+  }
+
+  if (action === "challenge") {
+    const result = getScoreValue(button.dataset.input);
+    if (!result) return;
+
+    const { input, value } = result;
+    const challengeValue = Math.abs(value);
+
+    await updateTeamWithUndo(
+      teamId,
+      {
+        strokes: currentStrokes - challengeValue,
+        challenges: currentChallenges - challengeValue
+      },
+      `${team.name} -${challengeValue} challenge`,
+      "challenge"
+    );
+
+    input.value = "";
   }
 
   if (action === "hole") {
-    await update(ref(database, `teams/${teamId}`), {
-      holesPlayed: Math.min(currentHoles + 1, 9)
-    });
-
-    await addHistory(`${team.name} completed a hole`);
-    vibrate();
+    await updateTeamWithUndo(
+      teamId,
+      {
+        holesPlayed: Math.min(currentHoles + 1, 9)
+      },
+      `${team.name} completed a hole`,
+      "hole"
+    );
   }
 });
 
@@ -201,33 +378,39 @@ adminTeams.addEventListener("change", async (event) => {
   const oldName = teamsData[teamId]?.name || "Team";
   const newName = input.value.trim() || "Unnamed Team";
 
-  await update(ref(database, `teams/${teamId}`), {
-    name: newName
-  });
-
-  await addHistory(`${oldName} renamed to ${newName}`);
+  await updateTeamWithUndo(
+    teamId,
+    {
+      name: newName
+    },
+    `${oldName} renamed to ${newName}`,
+    "rename"
+  );
 });
 
 document.getElementById("savePubName").addEventListener("click", async () => {
   const currentHole = settingsData.currentHole || 1;
   const newPubName = pubName.value.trim() || `Pub ${currentHole}`;
 
-  await update(ref(database, "settings/pubs"), {
-    [currentHole]: newPubName
-  });
+  const updates = {};
+  updates[`pubs/${currentHole}`] = newPubName;
 
-  await addHistory(`Hole ${currentHole} renamed to ${newPubName}`);
+  await updateSettingsWithUndo(
+    updates,
+    `Hole ${currentHole} renamed to ${newPubName}`
+  );
 });
 
 document.getElementById("previousHole").addEventListener("click", async () => {
   const currentHole = settingsData.currentHole || 1;
   const newHole = Math.max(currentHole - 1, 1);
 
-  await update(settingsRef, {
-    currentHole: newHole
-  });
-
-  await addHistory(`Moved to Hole ${newHole}`);
+  await updateSettingsWithUndo(
+    {
+      currentHole: newHole
+    },
+    `Moved to Hole ${newHole}`
+  );
 });
 
 document.getElementById("nextHole").addEventListener("click", async () => {
@@ -235,11 +418,12 @@ document.getElementById("nextHole").addEventListener("click", async () => {
   const totalHoles = settingsData.totalHoles || 9;
   const newHole = Math.min(currentHole + 1, totalHoles);
 
-  await update(settingsRef, {
-    currentHole: newHole
-  });
-
-  await addHistory(`Moved to Hole ${newHole}`);
+  await updateSettingsWithUndo(
+    {
+      currentHole: newHole
+    },
+    `Moved to Hole ${newHole}`
+  );
 });
 
 document.getElementById("resetScores").addEventListener("click", async () => {
@@ -248,6 +432,7 @@ document.getElementById("resetScores").addEventListener("click", async () => {
 
   const snapshot = await get(teamsRef);
   const teams = snapshot.val() || {};
+
   const resetTeams = {};
 
   Object.entries(teams).forEach(([teamId, team]) => {
@@ -261,13 +446,49 @@ document.getElementById("resetScores").addEventListener("click", async () => {
   });
 
   await set(teamsRef, resetTeams);
-  await addHistory("All scores reset");
+
+  await saveUndo({
+    kind: "allTeams",
+    beforeTeams: teams,
+    description: "All scores reset"
+  });
+
+  await addHistory("All scores reset", "reset");
+  vibrate();
 });
+
+async function undoLastAction() {
+  const snapshot = await get(undoRef);
+  const lastAction = snapshot.val();
+
+  if (!lastAction) {
+    alert("There is no action to undo.");
+    return;
+  }
+
+  if (lastAction.kind === "team") {
+    await set(ref(database, `teams/${lastAction.teamId}`), lastAction.before);
+    await addHistory(`Undo: ${lastAction.description}`, "undo");
+  }
+
+  if (lastAction.kind === "settings") {
+    await set(settingsRef, lastAction.before);
+    await addHistory(`Undo: ${lastAction.description}`, "undo");
+  }
+
+  if (lastAction.kind === "allTeams") {
+    await set(teamsRef, lastAction.beforeTeams);
+    await addHistory("Undo: all scores reset", "undo");
+  }
+
+  await set(undoRef, null);
+  vibrate();
+}
 
 function renderHistory(history) {
   const entries = Object.values(history)
     .sort((a, b) => b.time - a.time)
-    .slice(0, 20);
+    .slice(0, 25);
 
   historyList.innerHTML = "";
 
@@ -278,7 +499,7 @@ function renderHistory(history) {
 
   entries.forEach((entry) => {
     const item = document.createElement("div");
-    item.className = "history-item";
+    item.className = `history-item ${entry.type || "info"}`;
 
     const time = new Date(entry.time).toLocaleTimeString([], {
       hour: "2-digit",

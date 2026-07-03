@@ -550,3 +550,24 @@ h1 {
 .history-item.reset span {
   color: #f97316;
 }
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.history-header h2 {
+  margin: 0;
+}
+
+.clear-history-button {
+  padding: 10px 12px;
+  border: none;
+  border-radius: 12px;
+  background: #ef4444;
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+}

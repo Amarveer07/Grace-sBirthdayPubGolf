@@ -484,7 +484,17 @@ async function undoLastAction() {
   await set(undoRef, null);
   vibrate();
 }
+const clearHistoryButton = document.getElementById("clearHistory");
 
+if (clearHistoryButton) {
+  clearHistoryButton.addEventListener("click", async () => {
+    const confirmed = confirm("Clear the full history log? This will not reset scores.");
+    if (!confirmed) return;
+
+    await set(historyRef, null);
+    await set(undoRef, null);
+  });
+}
 function renderHistory(history) {
   const entries = Object.values(history)
     .sort((a, b) => b.time - a.time)

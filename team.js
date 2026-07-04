@@ -23,7 +23,62 @@ const database = getDatabase(app);
 
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
+const teamMembers = {
+  pink: [
+    {
+      name: "Lydia Morton",
+      photo: "team-photos/pink-1.jpg"
+    },
+    {
+      name: "Ben Hartridge",
+      photo: "team-photos/pink-2.jpg"
+    }
+  ],
 
+  red: [
+    {
+      name: "Maddy Alexander",
+      photo: "team-photos/red-1.jpg"
+    },
+    {
+      name: "Eunice Corpuz",
+      photo: "team-photos/red-2.jpg"
+    }
+  ],
+
+  blue: [
+    {
+      name: "Grace Johnson",
+      photo: "team-photos/blue-1.jpg"
+    },
+    {
+      name: "NUFC Alfie",
+      photo: "team-photos/blue-2.jpg"
+    }
+  ],
+
+  yellow: [
+    {
+      name: "Sam Livo",
+      photo: "team-photos/yellow-1.jpg"
+    },
+    {
+      name: "Catherine Mason",
+      photo: "team-photos/yellow-2.jpg"
+    }
+  ],
+
+  green: [
+    {
+      name: "Zack Rudd",
+      photo: "team-photos/green-1.jpg"
+    },
+    {
+      name: "Madie Charlton",
+      photo: "team-photos/green-2.jpg"
+    }
+  ]
+};
 
 const params = new URLSearchParams(
   window.location.search
@@ -53,9 +108,11 @@ const teamProfileChallenges =
 const teamProfileProgress =
   document.getElementById("teamProfileProgress");
 
+const teamProfileMembers =
+  document.getElementById("teamProfileMembers");
+
 const teamHoleScores =
   document.getElementById("teamHoleScores");
-
 
 let allTeams = {};
 let settings = {};
@@ -252,13 +309,54 @@ function renderHoleScores(team) {
     teamHoleScores.appendChild(row);
   }
 }
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
 
+
+function renderTeamMembers() {
+  const members =
+    teamMembers[teamId] || [];
+
+  teamProfileMembers.innerHTML =
+    members
+      .map((member) => `
+        <article class="team-profile-polaroid">
+
+          <div class="team-profile-photo-wrap">
+
+            <img
+              src="${member.photo}"
+              alt="${member.name}"
+              class="team-profile-photo"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+            />
+
+            <div class="team-profile-photo-fallback">
+              ${getInitials(member.name)}
+            </div>
+
+          </div>
+
+          <p>
+            ${member.name}
+          </p>
+
+        </article>
+      `)
+      .join("");
+}
 
 function renderTeam() {
   if (!teamId) {
     teamProfileName.textContent =
       "Team not found";
-
+renderTeamMembers();
     teamHoleScores.innerHTML = `
       <p class="loading">
         No team was selected.

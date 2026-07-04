@@ -27,7 +27,7 @@ const lastUpdated = document.getElementById("lastUpdated");
 
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
-
+const historyRef = ref(database, "history");
 const teamCards = new Map();
 const previousScores = new Map();
 
@@ -445,3 +445,97 @@ onValue(
     );
   }
 );
+// PUBLIC RECENT ACTIVITY
+
+const publicActivity =
+  document.getElementById("publicActivity");
+
+function getActivityIcon(type) {
+  if (type === "penalty") return "⚠️";
+  if (type === "challenge") return "🏆";
+  if (type === "undo") return "↩️";
+  return "🍺";
+}
+
+onValue(historyRef, (snapshot) => {
+  if (!publicActivity) return;
+
+  const history = snapshot.val() || {};
+
+  const allowedTypes = new Set([
+    "strokes",
+    "penalty",
+    "challenge",
+    "undo"
+  ]);
+
+  const entries = Object.values(history)
+    .filter((entry) =>
+      allowedTypes.has(entry.type)
+    )
+    .sort((a, b) => b.time - a.time)
+    .slice(0, 4);
+
+  publicActivity.innerHTML = "";
+
+  if (entries.length === 0) {
+    const emptyMessage =
+      document.createElement("p");
+
+    emptyMessage.className =
+      "activity-empty";
+
+    emptyMessage.textContent =
+      "No recent activity yet.";
+
+    publicActivity.appendChild(
+      emptyMessage
+    );
+
+    return;
+  }
+
+  entries.forEach((entry) => {
+    const item =
+      document.createElement("div");
+
+    item.className =
+      `public-activity-item ${entry.type}`;
+
+    const icon =
+      document.createElement("span");
+
+    icon.className = "activity-icon";
+    icon.textContent =
+      getActivityIcon(entry.type);
+
+    const content =
+      document.createElement("div");
+
+    content.className =
+      "activity-content";
+
+    const text =
+      document.createElement("p");
+
+    text.textContent = entry.text;
+
+    const time =
+      document.createElement("span");
+
+    time.textContent =
+      new Date(entry.time)
+        .toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+    content.appendChild(text);
+    content.appendChild(time);
+
+    item.appendChild(icon);
+    item.appendChild(content);
+
+    publicActivity.appendChild(item);
+  });
+});

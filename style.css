@@ -1612,3 +1612,449 @@ body::after {
     font-size: 24px;
   }
 }
+/* =========================================
+   LIVE PODIUM PAGE
+   ========================================= */
+
+.podium-section {
+  margin-top: 22px;
+  padding: 20px 14px 24px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(250, 204, 21, 0.18),
+      transparent 38%
+    ),
+    rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.32);
+}
+
+.podium-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.podium-title-row h2 {
+  margin: 3px 0 0;
+  font-size: 25px;
+}
+
+.podium-stage {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 8px;
+  min-height: 365px;
+}
+
+.podium-team {
+  --team-colour: #94a3b8;
+
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
+
+  padding: 16px 8px 0;
+
+  text-align: center;
+
+  border-radius: 22px 22px 8px 8px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--team-colour) 45%,
+      rgba(255, 255, 255, 0.18)
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--team-colour) 22%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.07)
+    );
+
+  box-shadow:
+    0 14px 35px rgba(0, 0, 0, 0.32),
+    0 0 26px
+    color-mix(
+      in srgb,
+      var(--team-colour) 18%,
+      transparent
+    );
+}
+
+.podium-place-1 {
+  min-height: 315px;
+  transform: translateY(-12px);
+
+  border-color:
+    rgba(250, 204, 21, 0.58);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(250, 204, 21, 0.20),
+      color-mix(
+        in srgb,
+        var(--team-colour) 20%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.08)
+    );
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.38),
+    0 0 38px rgba(250, 204, 21, 0.28);
+}
+
+.podium-place-2 {
+  min-height: 260px;
+}
+
+.podium-place-3 {
+  min-height: 220px;
+}
+
+.podium-medal {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+
+.podium-place-1 .podium-medal {
+  font-size: 46px;
+}
+
+.podium-team-dot {
+  width: 14px;
+  height: 14px;
+
+  margin-bottom: 8px;
+
+  border-radius: 50%;
+
+  background: var(--team-colour);
+
+  box-shadow:
+    0 0 18px var(--team-colour);
+}
+
+.podium-team h3 {
+  width: 100%;
+
+  margin: 0;
+
+  color: white;
+
+  font-size: 16px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.podium-place-1 h3 {
+  font-size: 19px;
+}
+
+.podium-score {
+  margin-top: 14px;
+}
+
+.podium-score strong {
+  display: block;
+
+  color: #facc15;
+
+  font-size: 36px;
+  line-height: 0.95;
+
+  text-shadow:
+    0 0 18px rgba(250, 204, 21, 0.30);
+}
+
+.podium-place-1 .podium-score strong {
+  font-size: 48px;
+}
+
+.podium-score span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+}
+
+.podium-progress {
+  margin: 10px 0 14px;
+
+  color: #cbd5e1;
+
+  font-size: 11px;
+}
+
+.podium-block {
+  width: calc(100% + 16px);
+
+  margin-top: auto;
+
+  padding: 16px 5px;
+
+  border-radius: 7px 7px 4px 4px;
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--team-colour) 75%,
+        #ffffff
+      ),
+      var(--team-colour)
+    );
+
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.28);
+}
+
+.podium-place-1 .podium-block {
+  padding: 28px 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fde047,
+      #eab308
+    );
+
+  color: #1f2937;
+}
+
+.podium-place-2 .podium-block {
+  padding: 20px 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d1d5db,
+      #9ca3af
+    );
+
+  color: #111827;
+}
+
+.podium-place-3 .podium-block {
+  padding: 15px 5px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #d97706,
+      #92400e
+    );
+}
+
+.podium-block span {
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.remaining-standings {
+  margin-top: 22px;
+}
+
+.lower-places {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.lower-place-card {
+  --team-colour: #94a3b8;
+
+  display: grid;
+
+  grid-template-columns:
+    46px
+    1fr
+    auto;
+
+  gap: 12px;
+
+  align-items: center;
+
+  padding: 14px;
+
+  border-radius: 20px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--team-colour) 40%,
+      rgba(255, 255, 255, 0.14)
+    );
+
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(
+        in srgb,
+        var(--team-colour) 18%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.07)
+    );
+}
+
+.lower-place-number {
+  width: 42px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.11);
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.lower-place-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lower-team-dot {
+  width: 10px;
+  height: 10px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: var(--team-colour);
+
+  box-shadow:
+    0 0 14px var(--team-colour);
+}
+
+.lower-place-name h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.lower-place-main p {
+  margin: 4px 0 0 18px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+.lower-place-score {
+  text-align: right;
+}
+
+.lower-place-score strong {
+  display: block;
+
+  color: #facc15;
+
+  font-size: 27px;
+  line-height: 1;
+}
+
+.lower-place-score span {
+  color: var(--muted);
+
+  font-size: 9px;
+
+  text-transform: uppercase;
+}
+
+.public-page-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 26px;
+}
+
+@media (max-width: 420px) {
+  .podium-section {
+    padding: 18px 8px 22px;
+  }
+
+  .podium-stage {
+    gap: 5px;
+    min-height: 335px;
+  }
+
+  .podium-team {
+    padding: 13px 5px 0;
+  }
+
+  .podium-team h3 {
+    font-size: 13px;
+  }
+
+  .podium-place-1 h3 {
+    font-size: 15px;
+  }
+
+  .podium-medal {
+    font-size: 28px;
+  }
+
+  .podium-place-1 .podium-medal {
+    font-size: 38px;
+  }
+
+  .podium-score strong {
+    font-size: 30px;
+  }
+
+  .podium-place-1 .podium-score strong {
+    font-size: 40px;
+  }
+
+  .podium-progress {
+    font-size: 9px;
+  }
+
+  .podium-block span {
+    font-size: 15px;
+  }
+}

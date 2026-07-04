@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Pub Golf Live Podium</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <main class="app">
+
+    <header class="hero festive-hero">
+
+      <div class="party-strip">
+        🏆 🍻 🥇 🥈 🥉 🎉
+      </div>
+
+      <p class="kicker">
+        Live Standings
+      </p>
+
+      <h1>
+        🏆 The Podium
+      </h1>
+
+      <p class="tagline">
+        Updated live throughout the night
+      </p>
+
+    </header>
+
+
+    <section class="podium-section">
+
+      <div class="podium-title-row">
+
+        <div>
+          <p class="label">
+            Current leaders
+          </p>
+
+          <h2>
+            Who's on top?
+          </h2>
+        </div>
+
+        <span class="activity-live">
+          ● LIVE
+        </span>
+
+      </div>
+
+
+      <div
+        id="podiumStage"
+        class="podium-stage"
+      >
+
+        <p class="loading">
+          Loading podium...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section class="remaining-standings">
+
+      <p class="label">
+        Chasing the podium
+      </p>
+
+      <div
+        id="lowerPlaces"
+        class="lower-places"
+      ></div>
+
+    </section>
+
+
+    <div class="public-page-links">
+
+      <a
+        class="teams-link"
+        href="index.html"
+      >
+        🏆 Leaderboard
+      </a>
+
+      <a
+        class="teams-link"
+        href="teams.html"
+      >
+        📸 View Teams
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <script
+    type="module"
+    src="podium.js"
+  ></script>
+
+</body>
+</html>

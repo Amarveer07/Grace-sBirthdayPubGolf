@@ -2725,3 +2725,17 @@ body::after {
 .leaderboard .team-card:active {
   transform: scale(0.985);
 }
+/* CLICKABLE TEAM GALLERY CARDS */
+
+.team-gallery-card {
+  cursor: pointer;
+}
+
+.team-gallery-card:active {
+  transform: scale(0.985);
+}
+
+.team-gallery-card:focus-visible {
+  outline: 3px solid var(--team-colour);
+  outline-offset: 4px;
+}

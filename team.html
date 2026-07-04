@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Team Profile</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  />
+</head>
+
+<body class="team-profile-page">
+
+  <main class="app">
+
+    <a
+      class="team-profile-back"
+      href="index.html"
+    >
+      ← Back to Leaderboard
+    </a>
+
+
+    <section
+      id="teamProfileHero"
+      class="team-profile-hero"
+    >
+
+      <p class="kicker">
+        Pub Golf Team
+      </p>
+
+      <div class="team-profile-title-row">
+
+        <span
+          id="teamProfileDot"
+          class="team-profile-dot"
+        ></span>
+
+        <h1 id="teamProfileName">
+          Loading Team...
+        </h1>
+
+      </div>
+
+      <p
+        id="teamProfilePosition"
+        class="team-profile-position"
+      >
+        Live standings
+      </p>
+
+    </section>
+
+
+    <section class="team-profile-score-card">
+
+      <p class="label">
+        Current Score
+      </p>
+
+      <strong id="teamProfileScore">
+        0
+      </strong>
+
+      <span>
+        total strokes
+      </span>
+
+    </section>
+
+
+    <section class="team-profile-summary">
+
+      <article class="team-profile-stat penalty-stat">
+
+        <span>
+          ⚠️
+        </span>
+
+        <div>
+          <p>
+            Penalties
+          </p>
+
+          <strong id="teamProfilePenalties">
+            +0
+          </strong>
+        </div>
+
+      </article>
+
+
+      <article class="team-profile-stat challenge-stat">
+
+        <span>
+          🏆
+        </span>
+
+        <div>
+          <p>
+            Challenge Points
+          </p>
+
+          <strong id="teamProfileChallenges">
+            0
+          </strong>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <section class="team-scorecard-section">
+
+      <div class="team-scorecard-header">
+
+        <div>
+          <p class="label">
+            Pub Scores
+          </p>
+
+          <h2>
+            Scorecard
+          </h2>
+        </div>
+
+        <span
+          id="teamProfileProgress"
+          class="activity-live"
+        >
+          0/9 PLAYED
+        </span>
+
+      </div>
+
+
+      <div
+        id="teamHoleScores"
+        class="team-hole-scores"
+      >
+
+        <p class="loading">
+          Loading scores...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <div class="public-page-links">
+
+      <a
+        class="teams-link"
+        href="index.html"
+      >
+        🏆 Leaderboard
+      </a>
+
+      <a
+        class="teams-link"
+        href="teams.html"
+      >
+        📸 Teams
+      </a>
+
+      <a
+        class="teams-link"
+        href="podium.html"
+      >
+        🥇 Podium
+      </a>
+
+    </div>
+
+  </main>
+
+
+  <script
+    type="module"
+    src="team.js"
+  ></script>
+
+</body>
+
+</html>

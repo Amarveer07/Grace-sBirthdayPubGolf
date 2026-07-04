@@ -158,6 +158,32 @@ function createTeamCard(teamId) {
   card.className = "team-card";
   card.dataset.teamId = teamId;
 
+  card.setAttribute("role", "link");
+  card.setAttribute("tabindex", "0");
+
+  function openTeamProfile() {
+    window.location.href =
+      `team.html?id=${encodeURIComponent(teamId)}`;
+  }
+
+  card.addEventListener(
+    "click",
+    openTeamProfile
+  );
+
+  card.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
+        openTeamProfile();
+      }
+    }
+  );
+
   teamCards.set(teamId, card);
 
   return card;
@@ -168,7 +194,10 @@ function updateTeamCard(card, team, position) {
     "--team-colour",
     team.colourHex
   );
-
+card.setAttribute(
+  "aria-label",
+  `View ${team.name} team profile`
+);
   card.innerHTML = `
     <div class="position">
       ${medalFor(position)}

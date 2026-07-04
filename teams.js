@@ -91,10 +91,34 @@ onValue(teamsRef, (snapshot) => {
     const members = teamMembers[teamId] || [];
     const colour = team.colourHex || "#94a3b8";
 
-    const card = document.createElement("section");
-    card.className = "team-gallery-card";
-    card.style.setProperty("--team-colour", colour);
+const card = document.createElement("section");
 
+card.className = "team-gallery-card";
+card.style.setProperty("--team-colour", colour);
+
+card.setAttribute("role", "link");
+card.setAttribute("tabindex", "0");
+card.setAttribute(
+  "aria-label",
+  `View ${team.name} team profile`
+);
+
+function openTeamProfile() {
+  window.location.href =
+    `team.html?id=${encodeURIComponent(teamId)}`;
+}
+
+card.addEventListener("click", openTeamProfile);
+
+card.addEventListener("keydown", (event) => {
+  if (
+    event.key === "Enter" ||
+    event.key === " "
+  ) {
+    event.preventDefault();
+    openTeamProfile();
+  }
+});
     card.innerHTML = `
       <div class="gallery-team-header">
         <span class="team-dot"></span>

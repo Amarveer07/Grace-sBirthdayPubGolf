@@ -251,21 +251,86 @@ async function saveUndo(action) {
   });
 }
 
-async function updateTeamWithUndo(teamId, updates, historyText, historyType) {
-  const teamRef = ref(database, `teams/${teamId}`);
-  const beforeSnapshot = await get(teamRef);
-  const before = beforeSnapshot.val();
+async function updateTeamWithUndo(
+  teamId,
+  updates,
+  historyText,
+  type
+) {
+  const teamRef =
+    ref(database, `teams/${teamId}`);
 
-  await update(teamRef, updates);
+  const teamSnapshot =
+    await get(teamRef);
+
+  const previousTeam =
+    teamSnapshot.val();
+
+  if (!previousTeam) return;
 
   await saveUndo({
     kind: "team",
     teamId,
-    before,
-    description: historyText
+    previousTeam
   });
 
-  await addHistory(historyText, historyType);
+  const finalUpdates = {
+    ...updates
+  };
+
+  /*
+    Normal strokes should also be saved
+    against the current hole.
+
+    Penalties and challenges still affect
+    the total score, but are NOT added to
+    the pub scorecard.
+  */
+
+  if (
+    type === "strokes" &&
+    updates.strokes !== undefined
+  ) {
+    const settingsSnapshot =
+      await get(settingsRef);
+
+    const settings =
+      settingsSnapshot.val() || {};
+
+    const currentHole =
+      Number(settings.currentHole || 1);
+
+    const oldTotal =
+      Number(previousTeam.strokes || 0);
+
+    const newTotal =
+      Number(updates.strokes || 0);
+
+    const strokeChange =
+      newTotal - oldTotal;
+
+    const previousHoleScore =
+      Number(
+        previousTeam.holeScores?.[currentHole] ||
+        0
+      );
+
+    finalUpdates[
+      `holeScores/${currentHole}`
+    ] =
+      previousHoleScore + strokeChange;
+  }
+
+  await update(
+    teamRef,
+    finalUpdates
+  );
+
+  await addHistory(
+    historyText,
+    type
+  );
+
   vibrate();
 }
 

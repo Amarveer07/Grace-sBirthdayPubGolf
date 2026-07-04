@@ -2694,3 +2694,34 @@ body::after {
     font-size: 22px;
   }
 }
+/* CLICKABLE LEADERBOARD CARDS */
+
+.leaderboard .team-card {
+  cursor: pointer;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.leaderboard .team-card:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--team-colour) 60%,
+      rgba(255, 255, 255, 0.20)
+    );
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.32),
+    0 0 24px
+    color-mix(
+      in srgb,
+      var(--team-colour) 18%,
+      transparent
+    );
+}
+
+.leaderboard .team-card:active {
+  transform: scale(0.985);
+}

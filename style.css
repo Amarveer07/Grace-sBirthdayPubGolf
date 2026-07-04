@@ -2058,3 +2058,639 @@ body::after {
     font-size: 15px;
   }
 }
+/* =========================================
+   TEAM PROFILE PAGE
+   ========================================= */
+
+:root {
+  --profile-team-colour: #ff4da6;
+}
+
+.team-profile-page {
+  min-height: 100vh;
+  background: #0c0714 !important;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.team-profile-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+
+  background:
+    radial-gradient(
+      circle at 50% -5%,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 70%,
+        transparent
+      ),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 10% 45%,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 32%,
+        transparent
+      ),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 92% 75%,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 26%,
+        transparent
+      ),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #170c20 0%,
+      #080b13 55%,
+      #110814 100%
+    );
+}
+
+.team-profile-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.24;
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.08) 0,
+      rgba(255, 255, 255, 0.08) 2px,
+      transparent 2px,
+      transparent 22px
+    );
+}
+
+.team-profile-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin: 8px 0 18px;
+
+  color: #e2e8f0;
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.team-profile-hero {
+  position: relative;
+  overflow: hidden;
+
+  padding: 28px 20px;
+
+  border-radius: 30px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 55%,
+      rgba(255, 255, 255, 0.18)
+    );
+
+  background:
+    radial-gradient(
+      circle at 85% 15%,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 38%,
+        transparent
+      ),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 22%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.07)
+    );
+
+  box-shadow:
+    0 22px 55px rgba(0, 0, 0, 0.38),
+    0 0 45px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 25%,
+      transparent
+    );
+}
+
+.team-profile-hero::before {
+  content: "";
+
+  position: absolute;
+  width: 160px;
+  height: 160px;
+
+  top: -85px;
+  right: -55px;
+
+  border-radius: 50%;
+
+  border:
+    24px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 25%,
+      transparent
+    );
+}
+
+.team-profile-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 6px;
+}
+
+.team-profile-dot {
+  width: 17px;
+  height: 17px;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: var(--profile-team-colour);
+}
+
+.team-profile-title-row h1 {
+  margin: 0;
+
+  color: white;
+
+  font-size: clamp(30px, 8vw, 48px);
+  line-height: 1;
+
+  text-shadow:
+    0 0 26px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 48%,
+      transparent
+    );
+}
+
+.team-profile-position {
+  display: inline-flex;
+
+  margin: 16px 0 0;
+  padding: 8px 13px;
+
+  border-radius: 999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 22%,
+      rgba(255, 255, 255, 0.08)
+    );
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 42%,
+      transparent
+    );
+}
+
+.team-profile-score-card {
+  position: relative;
+
+  margin-top: 18px;
+  padding: 26px 20px;
+
+  text-align: center;
+
+  border-radius: 28px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 40%,
+      rgba(255, 255, 255, 0.14)
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 18%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.07)
+    );
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.30);
+}
+
+.team-profile-score-card strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: white;
+
+  font-size: 76px;
+  line-height: 0.95;
+
+  text-shadow:
+    0 0 32px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 55%,
+      transparent
+    );
+}
+
+.team-profile-score-card > span {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.team-profile-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 14px;
+}
+
+.team-profile-stat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 0;
+
+  padding: 16px 13px;
+
+  border-radius: 22px;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  background: rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.team-profile-stat > span {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  border-radius: 14px;
+
+  font-size: 20px;
+}
+
+.penalty-stat > span {
+  background: rgba(239, 68, 68, 0.20);
+}
+
+.challenge-stat > span {
+  background: rgba(34, 197, 94, 0.20);
+}
+
+.team-profile-stat p {
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+}
+
+.team-profile-stat strong {
+  display: block;
+
+  margin-top: 3px;
+
+  color: white;
+
+  font-size: 23px;
+}
+
+.penalty-stat strong {
+  color: #f87171;
+}
+
+.challenge-stat strong {
+  color: #4ade80;
+}
+
+.team-scorecard-section {
+  margin-top: 22px;
+  padding: 18px;
+
+  border-radius: 28px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 35%,
+      rgba(255, 255, 255, 0.14)
+    );
+
+  background: rgba(255, 255, 255, 0.07);
+
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.30);
+}
+
+.team-scorecard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+.team-scorecard-header h2 {
+  margin: 2px 0 0;
+
+  font-size: 24px;
+}
+
+.team-hole-scores {
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+.team-hole-score-row {
+  display: grid;
+
+  grid-template-columns:
+    42px
+    minmax(0, 1fr)
+    48px;
+
+  gap: 11px;
+
+  align-items: center;
+
+  padding: 12px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  background:
+    rgba(255, 255, 255, 0.055);
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.team-hole-score-row.completed-hole {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 26%,
+      rgba(255, 255, 255, 0.08)
+    );
+}
+
+.team-hole-score-row.current-hole {
+  transform: scale(1.015);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 72%,
+      white 8%
+    );
+
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 25%,
+        transparent
+      ),
+      rgba(255, 255, 255, 0.08)
+    );
+
+  box-shadow:
+    0 0 28px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 20%,
+      transparent
+    );
+}
+
+.team-hole-score-row.upcoming-hole {
+  opacity: 0.62;
+}
+
+.team-hole-number {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 16%,
+      rgba(255, 255, 255, 0.08)
+    );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.current-hole .team-hole-number {
+  background: var(--profile-team-colour);
+
+  color: #ffffff;
+
+  box-shadow:
+    0 0 18px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 60%,
+      transparent
+    );
+}
+
+.team-hole-main {
+  min-width: 0;
+}
+
+.team-hole-main h3 {
+  margin: 0;
+
+  color: white;
+
+  font-size: 15px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.team-hole-main p {
+  margin: 3px 0 0;
+
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+.current-hole .team-hole-main p {
+  color:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 72%,
+      white
+    );
+
+  font-weight: 900;
+}
+
+.team-hole-score-row > strong {
+  text-align: center;
+
+  color: white;
+
+  font-size: 25px;
+
+  line-height: 1;
+}
+
+.current-hole > strong {
+  color:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 78%,
+      white
+    );
+
+  text-shadow:
+    0 0 16px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 46%,
+      transparent
+    );
+}
+
+@media (max-width: 420px) {
+  .team-profile-hero {
+    padding: 24px 17px;
+  }
+
+  .team-profile-title-row h1 {
+    font-size: 34px;
+  }
+
+  .team-profile-score-card strong {
+    font-size: 66px;
+  }
+
+  .team-profile-summary {
+    gap: 9px;
+  }
+
+  .team-profile-stat {
+    gap: 8px;
+    padding: 14px 9px;
+  }
+
+  .team-profile-stat > span {
+    width: 36px;
+    height: 36px;
+  }
+
+  .team-profile-stat strong {
+    font-size: 20px;
+  }
+
+  .team-scorecard-section {
+    padding: 14px 10px;
+  }
+
+  .team-hole-score-row {
+    grid-template-columns:
+      38px
+      minmax(0, 1fr)
+      42px;
+
+    gap: 8px;
+
+    padding: 10px 8px;
+  }
+
+  .team-hole-number {
+    width: 36px;
+    height: 36px;
+  }
+
+  .team-hole-main h3 {
+    font-size: 14px;
+  }
+
+  .team-hole-score-row > strong {
+    font-size: 22px;
+  }
+}

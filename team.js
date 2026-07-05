@@ -117,7 +117,17 @@ const teamProfileChallenges =
 
 const teamProfileProgress =
   document.getElementById("teamProfileProgress");
+const teamStreakCard =
+  document.getElementById("teamStreakCard");
 
+const teamStreakFlames =
+  document.getElementById("teamStreakFlames");
+
+const teamStreakLabel =
+  document.getElementById("teamStreakLabel");
+
+const teamStreakCount =
+  document.getElementById("teamStreakCount");
 const teamProfileMembers =
   document.getElementById("teamProfileMembers");
 
@@ -444,7 +454,142 @@ function runTeamIntro(team) {
     );
   }, 2100);
 }
+function getCurrentWinStreak(team) {
+  const normalisedTeams =
+    Object.entries(allTeams)
+      .map(([id, teamData]) =>
+        normaliseTeam(id, teamData)
+      );
 
+  if (normalisedTeams.length === 0) {
+    return 0;
+  }
+
+  const totalHoles =
+    Number(settings.totalHoles || 9);
+
+  const completedHoleWinners = [];
+
+
+  for (
+    let hole = 1;
+    hole <= totalHoles;
+    hole++
+  ) {
+    const everyTeamHasScore =
+      normalisedTeams.every(
+        (currentTeam) =>
+          currentTeam.holeScores?.[hole] !== undefined
+      );
+
+    if (!everyTeamHasScore) {
+      break;
+    }
+
+
+    const lowestScore =
+      Math.min(
+        ...normalisedTeams.map(
+          (currentTeam) =>
+            Number(
+              currentTeam.holeScores[hole]
+            )
+        )
+      );
+
+
+    const winners =
+      normalisedTeams
+        .filter(
+          (currentTeam) =>
+            Number(
+              currentTeam.holeScores[hole]
+            ) === lowestScore
+        )
+        .map(
+          (currentTeam) =>
+            currentTeam.id
+        );
+
+
+    completedHoleWinners.push(
+      winners
+    );
+  }
+
+
+  let streak = 0;
+
+
+  for (
+    let index =
+      completedHoleWinners.length - 1;
+
+    index >= 0;
+
+    index--
+  ) {
+    const winners =
+      completedHoleWinners[index];
+
+    if (
+      winners.includes(team.id)
+    ) {
+      streak += 1;
+    } else {
+      break;
+    }
+  }
+
+
+  return streak;
+}
+
+
+function renderTeamStreak(team) {
+  const streak =
+    getCurrentWinStreak(team);
+
+
+  if (
+    !teamStreakCard ||
+    streak < 2
+  ) {
+    if (teamStreakCard) {
+      teamStreakCard.hidden = true;
+    }
+
+    return;
+  }
+
+
+  teamStreakCard.hidden = false;
+
+
+  if (streak === 2) {
+    teamStreakFlames.textContent =
+      "🔥";
+
+    teamStreakLabel.textContent =
+      "ON FIRE";
+  } else if (streak === 3) {
+    teamStreakFlames.textContent =
+      "🔥🔥🔥";
+
+    teamStreakLabel.textContent =
+      "UNSTOPPABLE";
+  } else {
+    teamStreakFlames.textContent =
+      "🔥🔥🔥🔥";
+
+    teamStreakLabel.textContent =
+      "ABSOLUTELY FLYING";
+  }
+
+
+  teamStreakCount.textContent =
+    `${streak} HOLE WIN STREAK`;
+}
 function renderTeam() {
   if (!teamId) {
     teamProfileName.textContent =
@@ -522,7 +667,7 @@ runTeamIntro(team);
 
   teamProfileProgress.textContent =
     `${team.holesPlayed}/9 PLAYED`;
-
+renderTeamStreak(team);
 
   renderHoleScores(team);
 }

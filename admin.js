@@ -200,10 +200,7 @@ function renderTeams() {
         </div>
       </div>
 
-      <button class="admin-main-button" data-action="hole" data-team="${teamId}">
-        Mark hole completed
-      </button>
-
+     
       <label class="admin-label">
         Team name
         <input data-action="rename" data-team="${teamId}" value="${team.name}" />

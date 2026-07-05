@@ -38,8 +38,8 @@ const teamOrder = ["pink", "red", "blue", "yellow", "green"];
 
 const teamMembers = {
   pink: [
-    { name: "Lydia Morton", photo: "team-photos/pink-1.jpg" },
-    { name: "Ben Hartridge", photo: "team-photos/pink-2.jpg" },
+    { name: "Sam Livo", photo: "team-photos/yellow-1.jpg" },
+  { name: "Catherine Mason", photo: "team-photos/yellow-2.jpg" }
     
   ],
   red: [
@@ -53,8 +53,8 @@ const teamMembers = {
    
   ],
   yellow: [
-    { name: "Sam Livo", photo: "team-photos/yellow-1.jpg" },
-    { name: "Catherine Mason", photo: "team-photos/yellow-2.jpg" },
+{ name: "Lydia Morton", photo: "team-photos/pink-1.jpg" },
+  { name: "Ben Hartridge", photo: "team-photos/pink-2.jpg" }
     
   ],
   green: [

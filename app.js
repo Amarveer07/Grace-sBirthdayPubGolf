@@ -568,3 +568,311 @@ onValue(historyRef, (snapshot) => {
     publicActivity.appendChild(item);
   });
 });
+// =========================================
+// BIRTHDAY EASTER EGG
+// =========================================
+
+const easterEggTrophy =
+  document.getElementById("easterEggTrophy");
+
+const birthdayEasterEgg =
+  document.getElementById("birthdayEasterEgg");
+
+let trophyTapCount = 0;
+let trophyTapResetTimer = null;
+let easterEggIsRunning = false;
+
+
+const confettiColours = [
+  "#ff4da6", // pink team
+  "#ff3b30", // red team
+  "#3b82f6", // blue team
+  "#facc15", // yellow team
+  "#22c55e", // green team
+  "#ffd700"  // gold
+];
+
+
+const confettiEmojis = [
+  "🎉",
+  "🎊",
+  "✨",
+  "🍺",
+  "⛳",
+  "🏆"
+];
+
+
+function randomBetween(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+
+function clearBirthdayConfetti() {
+  birthdayEasterEgg
+    .querySelectorAll(
+      ".birthday-confetti-piece"
+    )
+    .forEach((piece) => {
+      piece.remove();
+    });
+}
+
+
+function createBirthdayConfetti() {
+  const fragment =
+    document.createDocumentFragment();
+
+
+  /*
+    LOTS of normal confetti pieces
+  */
+
+  for (let i = 0; i < 260; i++) {
+    const piece =
+      document.createElement("span");
+
+    piece.className =
+      "birthday-confetti-piece confetti-shape";
+
+    const colour =
+      confettiColours[
+        i % confettiColours.length
+      ];
+
+    piece.style.setProperty(
+      "--confetti-colour",
+      colour
+    );
+
+    piece.style.setProperty(
+      "--start-x",
+      `${randomBetween(-10, 110)}vw`
+    );
+
+    piece.style.setProperty(
+      "--end-x",
+      `${randomBetween(-25, 125)}vw`
+    );
+
+    piece.style.setProperty(
+      "--start-y",
+      `${randomBetween(-35, 105)}vh`
+    );
+
+    piece.style.setProperty(
+      "--end-y",
+      `${randomBetween(110, 145)}vh`
+    );
+
+    piece.style.setProperty(
+      "--spin",
+      `${randomBetween(360, 1800)}deg`
+    );
+
+    piece.style.setProperty(
+      "--duration",
+      `${randomBetween(3.4, 6.2)}s`
+    );
+
+    piece.style.setProperty(
+      "--delay",
+      `${randomBetween(0, 1.1)}s`
+    );
+
+    const size =
+      randomBetween(7, 15);
+
+    piece.style.width =
+      `${size}px`;
+
+    piece.style.height =
+      `${randomBetween(9, 21)}px`;
+
+    fragment.appendChild(piece);
+  }
+
+
+  /*
+    Emoji confetti
+  */
+
+  for (let i = 0; i < 60; i++) {
+    const piece =
+      document.createElement("span");
+
+    piece.className =
+      "birthday-confetti-piece confetti-emoji";
+
+    piece.textContent =
+      confettiEmojis[
+        i % confettiEmojis.length
+      ];
+
+    piece.style.setProperty(
+      "--start-x",
+      `${randomBetween(-5, 105)}vw`
+    );
+
+    piece.style.setProperty(
+      "--end-x",
+      `${randomBetween(-20, 120)}vw`
+    );
+
+    piece.style.setProperty(
+      "--start-y",
+      `${randomBetween(-45, 80)}vh`
+    );
+
+    piece.style.setProperty(
+      "--end-y",
+      `${randomBetween(110, 140)}vh`
+    );
+
+    piece.style.setProperty(
+      "--spin",
+      `${randomBetween(360, 1440)}deg`
+    );
+
+    piece.style.setProperty(
+      "--duration",
+      `${randomBetween(4, 6.8)}s`
+    );
+
+    piece.style.setProperty(
+      "--delay",
+      `${randomBetween(0, 1.4)}s`
+    );
+
+    piece.style.fontSize =
+      `${randomBetween(18, 32)}px`;
+
+    fragment.appendChild(piece);
+  }
+
+
+  birthdayEasterEgg.appendChild(
+    fragment
+  );
+}
+
+
+function triggerBirthdayEasterEgg() {
+  if (easterEggIsRunning) return;
+
+  easterEggIsRunning = true;
+  trophyTapCount = 0;
+
+  clearBirthdayConfetti();
+  createBirthdayConfetti();
+
+  birthdayEasterEgg.classList.add(
+    "birthday-easter-egg-active"
+  );
+
+  easterEggTrophy.classList.add(
+    "trophy-unlocked"
+  );
+
+  birthdayEasterEgg.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  if (
+    navigator.vibrate
+  ) {
+    navigator.vibrate([
+      60,
+      40,
+      90,
+      40,
+      140
+    ]);
+  }
+
+
+  setTimeout(() => {
+    birthdayEasterEgg.classList.remove(
+      "birthday-easter-egg-active"
+    );
+
+    easterEggTrophy.classList.remove(
+      "trophy-unlocked"
+    );
+
+    birthdayEasterEgg.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }, 5200);
+
+
+  setTimeout(() => {
+    clearBirthdayConfetti();
+    easterEggIsRunning = false;
+  }, 7200);
+}
+
+
+function registerTrophyTap() {
+  if (easterEggIsRunning) return;
+
+  trophyTapCount += 1;
+
+  easterEggTrophy.classList.remove(
+    "trophy-tapped"
+  );
+
+  void easterEggTrophy.offsetWidth;
+
+  easterEggTrophy.classList.add(
+    "trophy-tapped"
+  );
+
+
+  if (navigator.vibrate) {
+    navigator.vibrate(18);
+  }
+
+
+  clearTimeout(
+    trophyTapResetTimer
+  );
+
+
+  trophyTapResetTimer =
+    setTimeout(() => {
+      trophyTapCount = 0;
+    }, 10000);
+
+
+  if (trophyTapCount >= 5) {
+    clearTimeout(
+      trophyTapResetTimer
+    );
+
+    triggerBirthdayEasterEgg();
+  }
+}
+
+
+if (easterEggTrophy) {
+  easterEggTrophy.addEventListener(
+    "click",
+    registerTrophyTap
+  );
+
+  easterEggTrophy.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
+        registerTrophyTap();
+      }
+    }
+  );
+}

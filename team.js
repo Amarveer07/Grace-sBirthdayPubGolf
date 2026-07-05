@@ -28,12 +28,12 @@ const settingsRef = ref(database, "settings");
 const teamMembers = {
   pink: [
     {
-      name: "Lydia Morton",
-      photo: "team-photos/pink-1.jpg"
+      name: "Sam Livo",
+      photo: "team-photos/yellow-1.jpg"
     },
     {
-      name: "Ben Hartridge",
-      photo: "team-photos/pink-2.jpg"
+      name: "Catherine Mason",
+      photo: "team-photos/yellow-2.jpg"
     }
   ],
 
@@ -61,12 +61,12 @@ const teamMembers = {
 
   yellow: [
     {
-      name: "Sam Livo",
-      photo: "team-photos/yellow-1.jpg"
+      name: "Lydia Morton",
+      photo: "team-photos/pink-1.jpg"
     },
     {
-      name: "Catherine Mason",
-      photo: "team-photos/yellow-2.jpg"
+      name: "Ben hartridge",
+      photo: "team-photos/pink-2.jpg"
     }
   ],
 

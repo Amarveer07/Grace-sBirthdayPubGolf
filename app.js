@@ -657,7 +657,7 @@ function createBirthdayConfetti() {
 
     piece.style.setProperty(
       "--start-y",
-      `${randomBetween(-35, -5)}vh`
+      `${randomBetween(-8, 0)}vh`
     );
 
     piece.style.setProperty(
@@ -721,7 +721,7 @@ function createBirthdayConfetti() {
 
     piece.style.setProperty(
       "--start-y",
-      `${randomBetween(-40, -8)}vh`
+      `${randomBetween(-10, 0)}vh`
     );
 
     piece.style.setProperty(

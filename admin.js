@@ -679,3 +679,118 @@ if (fullEventResetButton) {
     alert("Fresh event ready! Everything has been reset.");
   });
 }
+// =========================================
+// COMPLETE HOLE AND MOVE ON
+// =========================================
+
+const completeHoleAndMoveOnButton =
+  document.getElementById("completeHoleAndMoveOn");
+
+if (completeHoleAndMoveOnButton) {
+  completeHoleAndMoveOnButton.addEventListener(
+    "click",
+    async () => {
+      const teamsSnapshot =
+        await get(teamsRef);
+
+      const settingsSnapshot =
+        await get(settingsRef);
+
+      const teams =
+        teamsSnapshot.val() || {};
+
+      const settings =
+        settingsSnapshot.val() || {};
+
+      const currentHole =
+        Number(settings.currentHole || 1);
+
+      const totalHoles =
+        Number(settings.totalHoles || 9);
+
+
+      const teamsMissingScores =
+        Object.entries(teams)
+          .filter(([, team]) =>
+            team.holeScores?.[currentHole] === undefined
+          )
+          .map(([, team]) =>
+            team.name || "Unnamed team"
+          );
+
+
+      if (teamsMissingScores.length > 0) {
+        alert(
+          `You cannot complete Hole ${currentHole} yet.\n\nStill missing scores for:\n\n${teamsMissingScores.join("\n")}`
+        );
+
+        return;
+      }
+
+
+      const nextHole =
+        Math.min(
+          currentHole + 1,
+          totalHoles
+        );
+
+
+      await saveUndo({
+        kind: "eventProgress",
+        beforeTeams: teams,
+        beforeSettings: settings,
+        description:
+          `Complete Hole ${currentHole} and move on`
+      });
+
+
+      const rootUpdates = {};
+
+
+      Object.entries(teams).forEach(
+        ([teamId, team]) => {
+          const previousHolesPlayed =
+            Number(team.holesPlayed || 0);
+
+          rootUpdates[
+            `teams/${teamId}/holesPlayed`
+          ] =
+            Math.max(
+              previousHolesPlayed,
+              currentHole
+            );
+        }
+      );
+
+
+      rootUpdates[
+        "settings/currentHole"
+      ] =
+        nextHole;
+
+
+      await update(
+        ref(database),
+        rootUpdates
+      );
+
+
+      await addHistory(
+        currentHole === totalHoles
+          ? `Hole ${currentHole} completed for all teams`
+          : `Hole ${currentHole} completed — moved to Hole ${nextHole}`,
+        "hole"
+      );
+
+
+      vibrate();
+
+
+      if (currentHole === totalHoles) {
+        alert(
+          "Final hole completed for all teams!"
+        );
+      }
+    }
+  );
+}

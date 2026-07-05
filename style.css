@@ -3383,98 +3383,16 @@ body::after {
 
 @keyframes birthdayConfettiFall {
   0% {
-  opacity: 1;
-
-  transform:
-    translate3d(
-      var(--start-x),
-      var(--start-y),
-      0
-    )
-    rotate(0deg)
-    scale(0.8);
-}
-
-3% {
-  opacity: 1;
-}
-
-  30% {
-    transform:
-      translate3d(
-        calc(
-          var(--start-x) + 7vw
-        ),
-        25vh,
-        0
-      )
-      rotate(
-        calc(
-          var(--spin) * 0.4
-        )
-      )
-      scale(1.1);
-  }
-
-  65% {
     opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
 
     transform:
       translate3d(
-        var(--end-x),
-        var(--end-y),
+        var(--start-x),
+        var(--start-y),
         0
       )
-      rotate(
-        var(--spin)
-      )
+      rotate(0deg)
       scale(0.8);
-  }
-}
-
-
-/* EMOJI FALL */
-
-@keyframes birthdayEmojiFall {
-  0% {
-  opacity: 1;
-
-  transform:
-    translate3d(
-      var(--start-x),
-      var(--start-y),
-      0
-    )
-    rotate(0deg)
-    scale(0.8);
-}
-
-3% {
-  opacity: 1;
-}
-  32% {
-    transform:
-      translate3d(
-        calc(
-          var(--start-x) - 6vw
-        ),
-        28vh,
-        0
-      )
-      rotate(
-        calc(
-          var(--spin) * 0.35
-        )
-      )
-      scale(1.25);
-  }
-
-  70% {
-    opacity: 1;
   }
 
   100% {
@@ -3493,6 +3411,37 @@ body::after {
   }
 }
 
+/* EMOJI FALL */
+
+@keyframes birthdayEmojiFall {
+  0% {
+    opacity: 1;
+
+    transform:
+      translate3d(
+        var(--start-x),
+        var(--start-y),
+        0
+      )
+      rotate(0deg)
+      scale(0.7);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--end-x),
+        var(--end-y),
+        0
+      )
+      rotate(
+        var(--spin)
+      )
+      scale(1);
+  }
+}
 
 /* GOLD FLASH */
 

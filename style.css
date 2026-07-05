@@ -2948,3 +2948,617 @@ body::after {
     font-size: 28px;
   }
 }
+/* =========================================
+   BIRTHDAY EASTER EGG
+   ========================================= */
+
+.easter-egg-trophy {
+  display: inline-block;
+
+  margin-left: 4px;
+
+  cursor: default;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  transform-origin: center;
+
+  transition:
+    filter 180ms ease,
+    transform 180ms ease;
+}
+
+.easter-egg-trophy.trophy-tapped {
+  animation:
+    trophySecretTap
+    420ms
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.easter-egg-trophy.trophy-unlocked {
+  position: relative;
+
+  z-index: 10002;
+
+  animation:
+    trophyBirthdayUnlock
+    1.4s
+    cubic-bezier(0.22, 1, 0.36, 1);
+
+  filter:
+    drop-shadow(0 0 12px #facc15)
+    drop-shadow(0 0 28px #f59e0b);
+}
+
+
+/* FULL SCREEN OVERLAY */
+
+.birthday-easter-egg {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease;
+}
+
+.birthday-easter-egg-active {
+  opacity: 1;
+  visibility: visible;
+
+  animation:
+    birthdayBackgroundFlash
+    1.2s
+    ease-out;
+}
+
+
+/* BIRTHDAY MESSAGE */
+
+.birthday-message {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 10005;
+
+  width: min(
+    calc(100% - 34px),
+    560px
+  );
+
+  padding:
+    24px
+    18px;
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.4)
+    rotate(-5deg);
+
+  opacity: 0;
+
+  border-radius: 28px;
+
+  border:
+    2px solid
+    rgba(250, 204, 21, 0.75);
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(250, 204, 21, 0.34),
+      transparent 52%
+    ),
+    linear-gradient(
+      135deg,
+      rgba(255, 77, 166, 0.92),
+      rgba(126, 34, 206, 0.94),
+      rgba(59, 130, 246, 0.92)
+    );
+
+  box-shadow:
+    0 28px 90px
+    rgba(0, 0, 0, 0.55),
+
+    0 0 36px
+    rgba(250, 204, 21, 0.55),
+
+    0 0 75px
+    rgba(255, 77, 166, 0.34);
+
+  color: white;
+
+  text-align: center;
+
+  font-size:
+    clamp(
+      25px,
+      7vw,
+      46px
+    );
+
+  font-weight: 1000;
+
+  line-height: 1.08;
+
+  letter-spacing: 0.5px;
+
+  text-shadow:
+    0 3px 0
+    rgba(0, 0, 0, 0.20),
+
+    0 0 22px
+    rgba(255, 255, 255, 0.44);
+}
+
+.birthday-easter-egg-active
+.birthday-message {
+  animation:
+    birthdayMessageReveal
+    4.6s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    forwards;
+}
+
+
+/* CONFETTI */
+
+.birthday-confetti-piece {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  z-index: 10003;
+
+  display: block;
+
+  pointer-events: none;
+
+  will-change:
+    transform,
+    opacity;
+}
+
+
+/* COLOURED CONFETTI */
+
+.confetti-shape {
+  background:
+    var(
+      --confetti-colour,
+      #facc15
+    );
+
+  border-radius: 2px;
+
+  box-shadow:
+    0 0 8px
+    color-mix(
+      in srgb,
+      var(--confetti-colour) 65%,
+      transparent
+    );
+
+  animation:
+    birthdayConfettiFall
+    var(--duration)
+    cubic-bezier(0.15, 0.65, 0.28, 1)
+    var(--delay)
+    both;
+}
+
+
+/* DIFFERENT CONFETTI SHAPES */
+
+.confetti-shape:nth-child(3n) {
+  border-radius: 50%;
+}
+
+.confetti-shape:nth-child(4n) {
+  clip-path:
+    polygon(
+      50% 0%,
+      100% 50%,
+      50% 100%,
+      0% 50%
+    );
+}
+
+.confetti-shape:nth-child(5n) {
+  border-radius:
+    999px;
+}
+
+.confetti-shape:nth-child(7n) {
+  transform-origin:
+    left center;
+}
+
+
+/* EMOJI CONFETTI */
+
+.confetti-emoji {
+  line-height: 1;
+
+  filter:
+    drop-shadow(
+      0 4px 7px
+      rgba(0, 0, 0, 0.28)
+    );
+
+  animation:
+    birthdayEmojiFall
+    var(--duration)
+    cubic-bezier(0.15, 0.65, 0.28, 1)
+    var(--delay)
+    both;
+}
+
+
+/* EXTRA GOLD SCREEN GLOW */
+
+.birthday-easter-egg-active::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 10001;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(250, 204, 21, 0.28),
+      transparent 48%
+    );
+
+  animation:
+    birthdayGlowPulse
+    2.4s
+    ease-out;
+
+  pointer-events: none;
+}
+
+
+/* TROPHY TAP */
+
+@keyframes trophySecretTap {
+  0% {
+    transform:
+      scale(1)
+      rotate(0deg);
+
+    filter:
+      drop-shadow(
+        0 0 0
+        transparent
+      );
+  }
+
+  35% {
+    transform:
+      scale(1.28)
+      rotate(-12deg);
+
+    filter:
+      drop-shadow(
+        0 0 10px
+        #facc15
+      );
+  }
+
+  65% {
+    transform:
+      scale(0.92)
+      rotate(9deg);
+  }
+
+  100% {
+    transform:
+      scale(1)
+      rotate(0deg);
+  }
+}
+
+
+/* 5TH TAP TROPHY */
+
+@keyframes trophyBirthdayUnlock {
+  0% {
+    transform:
+      scale(1)
+      translateY(0)
+      rotate(0deg);
+  }
+
+  20% {
+    transform:
+      scale(1.7)
+      translateY(-16px)
+      rotate(-18deg);
+  }
+
+  48% {
+    transform:
+      scale(2)
+      translateY(-26px)
+      rotate(380deg);
+  }
+
+  72% {
+    transform:
+      scale(1.55)
+      translateY(-8px)
+      rotate(700deg);
+  }
+
+  100% {
+    transform:
+      scale(1)
+      translateY(0)
+      rotate(720deg);
+  }
+}
+
+
+/* MESSAGE APPEAR + PULSE + FADE */
+
+@keyframes birthdayMessageReveal {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.35)
+      rotate(-6deg);
+  }
+
+  10% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.12)
+      rotate(2deg);
+  }
+
+  18% {
+    transform:
+      translate(-50%, -50%)
+      scale(0.96)
+      rotate(-1deg);
+  }
+
+  26% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.04)
+      rotate(0deg);
+  }
+
+  38% {
+    transform:
+      translate(-50%, -50%)
+      scale(1)
+      rotate(0deg);
+  }
+
+  76% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1)
+      rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.92)
+      rotate(0deg);
+  }
+}
+
+
+/* MASSIVE NORMAL CONFETTI FALL */
+
+@keyframes birthdayConfettiFall {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--start-x),
+        var(--start-y),
+        0
+      )
+      rotate(0deg)
+      scale(0.4);
+  }
+
+  6% {
+    opacity: 1;
+  }
+
+  30% {
+    transform:
+      translate3d(
+        calc(
+          var(--start-x) + 7vw
+        ),
+        25vh,
+        0
+      )
+      rotate(
+        calc(
+          var(--spin) * 0.4
+        )
+      )
+      scale(1.1);
+  }
+
+  65% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--end-x),
+        var(--end-y),
+        0
+      )
+      rotate(
+        var(--spin)
+      )
+      scale(0.8);
+  }
+}
+
+
+/* EMOJI FALL */
+
+@keyframes birthdayEmojiFall {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--start-x),
+        var(--start-y),
+        0
+      )
+      rotate(0deg)
+      scale(0.3);
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  32% {
+    transform:
+      translate3d(
+        calc(
+          var(--start-x) - 6vw
+        ),
+        28vh,
+        0
+      )
+      rotate(
+        calc(
+          var(--spin) * 0.35
+        )
+      )
+      scale(1.25);
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--end-x),
+        var(--end-y),
+        0
+      )
+      rotate(
+        var(--spin)
+      )
+      scale(0.9);
+  }
+}
+
+
+/* GOLD FLASH */
+
+@keyframes birthdayBackgroundFlash {
+  0% {
+    background:
+      rgba(250, 204, 21, 0);
+  }
+
+  12% {
+    background:
+      rgba(250, 204, 21, 0.30);
+  }
+
+  35% {
+    background:
+      rgba(255, 77, 166, 0.12);
+  }
+
+  100% {
+    background:
+      rgba(0, 0, 0, 0);
+  }
+}
+
+
+/* AMBIENT BIRTHDAY GLOW */
+
+@keyframes birthdayGlowPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  25% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+
+/* PHONE TWEAKS */
+
+@media (max-width: 420px) {
+  .birthday-message {
+    width:
+      calc(100% - 26px);
+
+    padding:
+      24px
+      12px;
+
+    border-radius:
+      24px;
+
+    font-size:
+      clamp(
+        24px,
+        8vw,
+        34px
+      );
+  }
+}

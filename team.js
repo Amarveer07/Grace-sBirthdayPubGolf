@@ -23,6 +23,8 @@ const database = getDatabase(app);
 
 const teamsRef = ref(database, "teams");
 const settingsRef = ref(database, "settings");
+
+
 const teamMembers = {
   pink: [
     {
@@ -80,6 +82,7 @@ const teamMembers = {
   ]
 };
 
+
 const params = new URLSearchParams(
   window.location.search
 );
@@ -113,6 +116,7 @@ const teamProfileMembers =
 
 const teamHoleScores =
   document.getElementById("teamHoleScores");
+
 
 let allTeams = {};
 let settings = {};
@@ -235,6 +239,7 @@ function renderHoleScores(team) {
     row.className =
       "team-hole-score-row";
 
+
     if (hole < currentHole) {
       row.classList.add("completed-hole");
     }
@@ -309,6 +314,8 @@ function renderHoleScores(team) {
     teamHoleScores.appendChild(row);
   }
 }
+
+
 function getInitials(name) {
   return name
     .split(" ")
@@ -352,11 +359,12 @@ function renderTeamMembers() {
       .join("");
 }
 
+
 function renderTeam() {
   if (!teamId) {
     teamProfileName.textContent =
       "Team not found";
-renderTeamMembers();
+
     teamHoleScores.innerHTML = `
       <p class="loading">
         No team was selected.
@@ -398,6 +406,9 @@ renderTeamMembers();
 
   teamProfileName.textContent =
     team.name;
+
+
+  renderTeamMembers();
 
 
   teamProfileDot.style.background =

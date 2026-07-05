@@ -530,7 +530,7 @@ async function undoLastAction() {
     alert("There is no action to undo.");
     return;
   }
-
+alert("Undo type: " + lastAction.kind);
   if (lastAction.kind === "team") {
     await set(
       ref(

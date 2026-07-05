@@ -89,7 +89,14 @@ const params = new URLSearchParams(
 
 const teamId = params.get("id");
 
+const teamIntro =
+  document.getElementById("teamIntro");
 
+const teamIntroName =
+  document.getElementById("teamIntroName");
+
+const teamIntroMembers =
+  document.getElementById("teamIntroMembers");
 const teamProfileName =
   document.getElementById("teamProfileName");
 
@@ -120,6 +127,7 @@ const teamHoleScores =
 
 let allTeams = {};
 let settings = {};
+let teamIntroHasRun = false;
 
 
 function normaliseTeam(id, team) {
@@ -358,7 +366,84 @@ function renderTeamMembers() {
       `)
       .join("");
 }
+function runTeamIntro(team) {
+  if (
+    teamIntroHasRun ||
+    !teamIntro ||
+    !teamIntroName ||
+    !teamIntroMembers
+  ) {
+    return;
+  }
 
+  teamIntroHasRun = true;
+
+  const members =
+    teamMembers[teamId] || [];
+
+  teamIntroName.textContent =
+    team.name;
+
+  teamIntroMembers.innerHTML =
+    members
+      .map((member, index) => `
+        <article
+          class="team-intro-polaroid team-intro-polaroid-${index + 1}"
+        >
+          <div class="team-intro-photo-wrap">
+            <img
+              src="${member.photo}"
+              alt="${member.name}"
+              class="team-intro-photo"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+            />
+
+            <div class="team-intro-photo-fallback">
+              ${getInitials(member.name)}
+            </div>
+          </div>
+
+          <p>
+            ${member.name}
+          </p>
+        </article>
+      `)
+      .join("");
+
+  teamIntro.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "team-intro-running"
+  );
+
+  requestAnimationFrame(() => {
+    teamIntro.classList.add(
+      "team-intro-active"
+    );
+  });
+
+  setTimeout(() => {
+    teamIntro.classList.add(
+      "team-intro-finished"
+    );
+
+    document.body.classList.remove(
+      "team-intro-running"
+    );
+
+    document.body.classList.add(
+      "team-intro-complete"
+    );
+
+    teamIntro.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }, 2100);
+}
 
 function renderTeam() {
   if (!teamId) {
@@ -398,7 +483,7 @@ function renderTeam() {
     "--profile-team-colour",
     team.colourHex
   );
-
+runTeamIntro(team);
 
   document.title =
     `${team.name} | Pub Golf`;

@@ -669,12 +669,13 @@ if (fullEventResetButton) {
 
     Object.entries(teams).forEach(([teamId, team]) => {
       freshTeams[teamId] = {
-        ...team,
-        strokes: 0,
-        holesPlayed: 0,
-        penalties: 0,
-        challenges: 0
-      };
+  ...team,
+  strokes: 0,
+  holesPlayed: 0,
+  penalties: 0,
+  challenges: 0,
+  holeScores: {}
+};
     });
 
     await set(teamsRef, freshTeams);

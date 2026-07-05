@@ -3383,21 +3383,21 @@ body::after {
 
 @keyframes birthdayConfettiFall {
   0% {
-    opacity: 0;
+  opacity: 1;
 
-    transform:
-      translate3d(
-        var(--start-x),
-        var(--start-y),
-        0
-      )
-      rotate(0deg)
-      scale(0.4);
-  }
+  transform:
+    translate3d(
+      var(--start-x),
+      var(--start-y),
+      0
+    )
+    rotate(0deg)
+    scale(0.8);
+}
 
-  6% {
-    opacity: 1;
-  }
+3% {
+  opacity: 1;
+}
 
   30% {
     transform:
@@ -3441,22 +3441,21 @@ body::after {
 
 @keyframes birthdayEmojiFall {
   0% {
-    opacity: 0;
+  opacity: 1;
 
-    transform:
-      translate3d(
-        var(--start-x),
-        var(--start-y),
-        0
-      )
-      rotate(0deg)
-      scale(0.3);
-  }
+  transform:
+    translate3d(
+      var(--start-x),
+      var(--start-y),
+      0
+    )
+    rotate(0deg)
+    scale(0.8);
+}
 
-  8% {
-    opacity: 1;
-  }
-
+3% {
+  opacity: 1;
+}
   32% {
     transform:
       translate3d(

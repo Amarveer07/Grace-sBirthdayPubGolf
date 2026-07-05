@@ -4105,3 +4105,273 @@ body::after {
     height: 17px;
   }
 }
+/* =========================================
+   TEAM STREAK FLAMES
+   ========================================= */
+
+.team-streak-card {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 18px;
+  padding: 18px;
+
+  border-radius: 24px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 58%,
+      rgba(255, 255, 255, 0.16)
+    );
+
+  background:
+    radial-gradient(
+      circle at 15% 50%,
+      rgba(249, 115, 22, 0.28),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 24%,
+        transparent
+      ),
+      rgba(249, 115, 22, 0.14),
+      rgba(255, 255, 255, 0.07)
+    );
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.32),
+    0 0 30px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 18%,
+      transparent
+    );
+
+  animation:
+    streakCardGlow
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+.team-streak-card[hidden] {
+  display: none;
+}
+
+.team-streak-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.16) 42%,
+      transparent 62%
+    );
+
+  transform:
+    translateX(-120%);
+
+  animation:
+    streakShine
+    3.4s
+    ease-in-out
+    infinite;
+}
+
+.team-streak-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  top: -70px;
+  right: -45px;
+
+  border-radius: 50%;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 25%,
+      transparent
+    );
+
+  filter: blur(12px);
+
+  pointer-events: none;
+}
+
+
+/* FLAMES */
+
+.team-streak-flames {
+  position: relative;
+  z-index: 2;
+
+  min-width: 74px;
+
+  text-align: center;
+
+  font-size: 42px;
+  line-height: 1;
+
+  transform-origin: bottom center;
+
+  filter:
+    drop-shadow(0 0 8px rgba(249, 115, 22, 0.85))
+    drop-shadow(0 0 18px rgba(250, 204, 21, 0.52));
+
+  animation:
+    streakFlameBounce
+    900ms
+    ease-in-out
+    infinite alternate;
+}
+
+
+/* TEXT */
+
+.team-streak-text {
+  position: relative;
+  z-index: 2;
+
+  min-width: 0;
+}
+
+.team-streak-text p {
+  margin: 0 0 4px;
+
+  color:
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 72%,
+      white
+    );
+
+  font-size: 12px;
+  font-weight: 1000;
+
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+
+  text-shadow:
+    0 0 14px
+    color-mix(
+      in srgb,
+      var(--profile-team-colour) 46%,
+      transparent
+    );
+}
+
+.team-streak-text strong {
+  display: block;
+
+  color: white;
+
+  font-size: 19px;
+  font-weight: 1000;
+
+  line-height: 1.1;
+
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.30);
+}
+
+
+/* ANIMATIONS */
+
+@keyframes streakCardGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 18px 42px rgba(0, 0, 0, 0.32),
+      0 0 24px
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 16%,
+        transparent
+      );
+  }
+
+  50% {
+    box-shadow:
+      0 20px 48px rgba(0, 0, 0, 0.36),
+      0 0 42px
+      color-mix(
+        in srgb,
+        var(--profile-team-colour) 30%,
+        transparent
+      );
+  }
+}
+
+@keyframes streakFlameBounce {
+  0% {
+    transform:
+      translateY(2px)
+      scale(0.96)
+      rotate(-2deg);
+  }
+
+  100% {
+    transform:
+      translateY(-4px)
+      scale(1.07)
+      rotate(2deg);
+  }
+}
+
+@keyframes streakShine {
+  0%,
+  68% {
+    transform:
+      translateX(-120%);
+  }
+
+  100% {
+    transform:
+      translateX(140%);
+  }
+}
+
+
+/* PHONE TWEAKS */
+
+@media (max-width: 420px) {
+  .team-streak-card {
+    gap: 12px;
+
+    padding: 16px 13px;
+  }
+
+  .team-streak-flames {
+    min-width: 60px;
+
+    font-size: 34px;
+  }
+
+  .team-streak-text p {
+    font-size: 10px;
+  }
+
+  .team-streak-text strong {
+    font-size: 16px;
+  }
+}

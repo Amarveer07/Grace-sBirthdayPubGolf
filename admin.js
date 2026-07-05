@@ -532,31 +532,63 @@ async function undoLastAction() {
   }
 
   if (lastAction.kind === "team") {
-    await set(ref(database, `teams/${lastAction.teamId}`), lastAction.before);
-    await addHistory(`Undo: ${lastAction.description}`, "undo");
+    await set(
+      ref(
+        database,
+        `teams/${lastAction.teamId}`
+      ),
+      lastAction.before
+    );
+
+    await addHistory(
+      `Undo: ${lastAction.description}`,
+      "undo"
+    );
   }
 
   if (lastAction.kind === "settings") {
-    await set(settingsRef, lastAction.before);
-    await addHistory(`Undo: ${lastAction.description}`, "undo");
+    await set(
+      settingsRef,
+      lastAction.before
+    );
+
+    await addHistory(
+      `Undo: ${lastAction.description}`,
+      "undo"
+    );
   }
 
   if (lastAction.kind === "allTeams") {
-    await set(teamsRef, lastAction.beforeTeams);
-    await addHistory("Undo: all scores reset", "undo");
-  }
-if (action.kind === "eventProgress") {
-  await set(
-    teamsRef,
-    action.beforeTeams
-  );
+    await set(
+      teamsRef,
+      lastAction.beforeTeams
+    );
 
-  await set(
-    settingsRef,
-    action.beforeSettings
-  );
-}
+    await addHistory(
+      "Undo: all scores reset",
+      "undo"
+    );
+  }
+
+  if (lastAction.kind === "eventProgress") {
+    await set(
+      teamsRef,
+      lastAction.beforeTeams
+    );
+
+    await set(
+      settingsRef,
+      lastAction.beforeSettings
+    );
+
+    await addHistory(
+      `Undo: ${lastAction.description}`,
+      "undo"
+    );
+  }
+
   await set(undoRef, null);
+
   vibrate();
 }
 const clearHistoryButton = document.getElementById("clearHistory");

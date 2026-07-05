@@ -545,7 +545,17 @@ async function undoLastAction() {
     await set(teamsRef, lastAction.beforeTeams);
     await addHistory("Undo: all scores reset", "undo");
   }
+if (action.kind === "eventProgress") {
+  await set(
+    teamsRef,
+    action.beforeTeams
+  );
 
+  await set(
+    settingsRef,
+    action.beforeSettings
+  );
+}
   await set(undoRef, null);
   vibrate();
 }
